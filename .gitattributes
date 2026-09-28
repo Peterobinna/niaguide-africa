@@ -1,0 +1,4 @@
+# Preserve artifact bytes on every platform, including ASCII-encoded PDFs.
+*.pdf binary
+*.png binary
+*.docx binary

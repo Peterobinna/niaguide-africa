@@ -1,135 +1,29 @@
-# Instructions for Codex
+# Project working agreement
 
-## Project goal
+## Structure
 
-Build the initial working version of **NiaGuide Africa**, a source-grounded AI guidance platform for Nigerian university students aged 18–25.
+- `src/app`: App Router pages and HTTP routes. `api/ask` owns generation orchestration.
+- `src/components`: accessible reusable and interactive React components.
+- `src/lib/catalogue.ts`: supplied neutral catalogue and clearly labelled fictional notes.
+- `src/lib/retrieval.ts`: validation, synthetic retrieval and evidence checks.
+- `src/lib/server`, `src/lib/supabase/server.ts`: server-only modules.
+- `supabase/migrations/202609280001_foundation.sql` and `202609280002_catalogue.sql`: reviewed SQL setup; do not automatically apply to a remote database.
+- `tests`: meaningful grounding regression tests. `docs`: design, architecture and demonstration evidence.
 
-Read `PROJECT_BRIEF.md` and `DESIGN_AND_CONTENT.md` before changing code. Treat those documents as the product requirements.
+## Conventions and checks
 
-## Working method
+Strict TypeScript; no `any`; small reusable components; semantic HTML and labelled forms; visible focus. Use npm and retain the lockfile. Next.js App Router route params are asynchronous. Keep Tailwind import/theme and shared CSS tokens consistent. Run `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` after substantive changes. `npm run dev` starts development, `npm start` serves the build.
 
-1. Inspect the repository before making changes.
-2. Create and maintain a short implementation plan.
-3. Work in small, testable milestones.
-4. After each milestone, run relevant formatting, linting, type checking, tests, and builds.
-5. Preserve user work and avoid destructive Git commands.
-6. Explain important decisions in simple language.
-7. Keep the README accurate as the project changes.
+## Security and content requirements
 
-## Required stack
+Never expose, print, change or commit secret values. Never copy `.env.local` into the repo. `.env.example` contains safe placeholders only. OpenAI uses the official SDK on the server. Do not remove RLS, grant ordinary users source writes, or allow users to set their admin role. Use Zod on API input and preserve ownership checks. Never weaken source-grounding, expert scoping, rights approval, citation checks, insufficiency behaviour or non-impersonation. Do not invent real-person biographies, quotes, URLs, permissions or endorsements. Synthetic data must stay explicitly labelled and gated by demo mode. Preserve disclosure and privacy warning strings from the brief. No destructive Git commands or direct merge into a default branch. Document untested live integrations honestly.
 
-- Next.js with TypeScript and the App Router
-- Tailwind CSS
-- Supabase Postgres, Auth, Storage, and pgvector
-- OpenAI Responses API using `gpt-6-luna`
-- OpenAI embeddings using `text-embedding-3-small`
-- Vercel deployment
+<!-- BEGIN:nextjs-agent-rules -->
 
-Do not replace the stack unless a blocking technical reason is documented.
+# This is NOT the Next.js you know
 
-## Security rules
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
 
-- Never commit API keys, service-role keys, database passwords, or private source files.
-- Keep real secrets in `.env.local` and deployment environment variables.
-- Commit only a safe `.env.example` containing variable names and descriptions.
-- Run OpenAI and privileged Supabase operations only on the server.
-- Validate all request bodies.
-- Protect administrator routes and mutations.
-- Use Supabase Row Level Security where appropriate.
-- Avoid logging full private source text or sensitive user information.
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
-## AI and source-grounding rules
-
-- The assistant must never claim to be the selected expert.
-- Do not imitate an expert's personality or generate first-person answers on their behalf.
-- Retrieve approved passages before generation.
-- Send the model only the question, necessary instructions, and retrieved passages.
-- Require citation markers that map to stored passage records.
-- If the evidence threshold is not met, return the exact insufficient-evidence message from `PROJECT_BRIEF.md` without calling normal answer generation.
-- Show the required AI disclosure with every answer.
-- Ordinary users must not upload arbitrary documents.
-- Keep source-rights status and collection enable/disable controls in the data model.
-
-## Initial demonstration priority
-
-Build one complete vertical slice before adding optional features:
-
-1. Student opens expert directory.
-2. Student opens the active expert profile.
-3. Student asks a question.
-4. Server embeds the question and retrieves passages from that expert's enabled collection.
-5. Server checks the evidence threshold.
-6. Server returns either a cited answer or the limitation message.
-7. The application stores the query, answer status, citations, latency, and feedback.
-8. Student can inspect the sources.
-
-Three expert cards may be visible, but only one collection must work for the initial demonstration. Label inactive profiles **Coming soon**.
-
-## Data model minimum
-
-Create migrations for at least:
-
-- `profiles`
-- `experts`
-- `source_documents`
-- `passages`
-- `queries`
-- `answers`
-- `answer_citations`
-- `feedback`
-
-Include timestamps, enabled/status fields, source-rights metadata, model and prompt versions, and latency where relevant.
-
-## Testing minimum
-
-Add tests for:
-
-- Request validation
-- Expert/collection filtering
-- Evidence-threshold behaviour
-- Citation-to-passage mapping
-- Insufficient-evidence response
-
-The project must pass linting, type checking, tests, and a production build before handoff.
-
-## Accessibility and interface quality
-
-- Design mobile first.
-- Use semantic HTML, keyboard-accessible controls, visible focus states, labelled form fields, and meaningful error messages.
-- Keep source citations and disclosure text readable.
-- Use loading, empty, error, success, and insufficient-evidence states.
-
-## Documentation and assignment deliverables
-
-The README must include:
-
-- Product description
-- Project scope and exclusions
-- Technology stack
-- Architecture summary
-- Local setup steps
-- Environment variable list
-- Database and ingestion setup
-- Test and build commands
-- Screenshots or design images
-- Deployment URL and plan
-- GitHub repository link
-- AI disclosure and ethical safeguards
-- Known limitations and next steps
-
-Also prepare:
-
-- A concise demonstration checklist
-- A 5–10 minute video demonstration script focused on the working application
-- A submission ZIP that excludes `node_modules`, `.next`, `.env.local`, private files, and secrets
-
-## Stop conditions
-
-Ask the project owner before:
-
-- Publishing the site publicly
-- Uploading a real expert's documents
-- Using an expert's photograph or logo
-- Changing the approved project scope
-- Adding paid services beyond the agreed small API budget
-
+<!-- END:nextjs-agent-rules -->
