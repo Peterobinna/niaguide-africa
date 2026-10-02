@@ -15,7 +15,7 @@ Use the [implemented project branch](https://github.com/Peterobinna/niaguide-afr
 2. Follow **Quick demo setup** below and try the question, citation and saved-answer journey.
 3. Read the [verification record](docs/VERIFICATION.md) for passed checks and unverified live integrations, and the [deployment plan](docs/DEPLOYMENT_PLAN.md) for infrastructure.
 
-The current requirements and design are in [Project specification](docs/PROJECT_SPEC.md) and [Design system](docs/DESIGN_SYSTEM.md). The video and final submission ZIP remain to be prepared.
+The current requirements and design are in [Project specification](docs/PROJECT_SPEC.md) and [Design system](docs/DESIGN_SYSTEM.md). The demonstration video is available through the link above.
 
 ## Development assistance
 
