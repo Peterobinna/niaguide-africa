@@ -4,6 +4,20 @@
 
 Repository: [Peterobinna/niaguide-africa](https://github.com/Peterobinna/niaguide-africa).
 
+## Assessor: start here
+
+Use the [implemented project branch](https://github.com/Peterobinna/niaguide-africa/tree/capstone/mvp-foundation) for this demonstration.
+
+1. Read the [submission evidence PDF](docs/submission/NiaGuide_Africa_Submission_Evidence.pdf): rubric mapping, tool choices, annotated screenshots, wireframes, database diagram and three code examples.
+2. Follow **Quick demo setup** below and try the question, citation and saved-answer journey.
+3. Read the [verification record](docs/VERIFICATION.md) for passed checks and unverified live integrations, and the [deployment plan](docs/DEPLOYMENT_PLAN.md) for infrastructure.
+
+The current requirements and design are in [Project specification](docs/PROJECT_SPEC.md) and [Design system](docs/DESIGN_SYSTEM.md). The video and final submission ZIP remain to be prepared.
+
+## Development assistance
+
+OpenAI Codex assisted with planning, code generation, debugging, documentation and automated verification. The verification record describes the checks performed; it does not imply independent student review of every line. The student must review the implementation, explain the demonstrated choices and follow the course's AI-use and acknowledgement requirements. This development assistance is separate from the application's AI disclosure below.
+
 ## The problem
 
 Ideas from African leaders are spread across many publications. Finding useful material and understanding which source supports an answer takes time. NiaGuide provides collection discovery, focused questions, and inspectable passages, without implying access to or representation of an expert.
@@ -128,4 +142,4 @@ Submission placeholders: `[Final hosted deployment screenshot]`, `[Configured li
 
 ## Earlier planning documents
 
-The original PROJECT_BRIEF.md, DESIGN_AND_CONTENT.md, BEGINNER_SETUP_CHECKLIST.md and CODEX_HANDOFF_PROMPT.md are preserved from the existing repository. They describe an earlier plan, including different design tokens, model choices and a live pilot. For this implemented initial demo, use this README and docs/PROJECT_SPEC.md, docs/DESIGN_SYSTEM.md and docs/VERIFICATION.md. Live generation, embeddings, approved real-expert content and deployment remain future integration work. The earlier agent instructions are retained in docs/original-planning/AGENTS.md for reference.
+The [earlier planning archive](docs/original-planning/README.md) preserves the original brief, design guide, beginner checklist, Codex handoff prompt and earlier agent instructions. These historical documents include different design tokens, model choices and a live pilot; they are not the setup guide or acceptance record for this demo. The root AGENTS.md remains the current development guidance. See the [submission preparation checklist](docs/submission/SUBMISSION_CHECKLIST.md) for policy confirmation and demonstration rehearsal.
