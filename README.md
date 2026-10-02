@@ -4,6 +4,9 @@
 
 Repository: [Peterobinna/niaguide-africa](https://github.com/Peterobinna/niaguide-africa).
 
+Initial software product Demo Video: https://drive.google.com/file/d/1R6rwuW7qhNdAyiyo0ZcjYGGjWyFvZE5s/view?usp=sharing
+
+
 ## Assessor: start here
 
 Use the [implemented project branch](https://github.com/Peterobinna/niaguide-africa/tree/capstone/mvp-foundation) for this demonstration.
