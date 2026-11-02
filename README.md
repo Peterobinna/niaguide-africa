@@ -18,6 +18,10 @@ Repository: [Peterobinna/niaguide-africa](https://github.com/Peterobinna/niaguid
 
 The older [initial evidence PDF](docs/submission/NiaGuide_Africa_Submission_Evidence.pdf) and [verification history](docs/VERIFICATION.md) are historical, not the current final report.
 
+Historical initial-product demonstration: [Earlier demo video](https://drive.google.com/file/d/1R6rwuW7qhNdAyiyo0ZcjYGGjWyFvZE5s/view?usp=sharing). This is separate from the final walkthrough linked above.
+
+Design references: [Project specification](docs/PROJECT_SPEC.md) and [Design system](docs/DESIGN_SYSTEM.md).
+
 ## Current functionality
 
 - Directory, field/country/status filters, expert profiles and continuous chat.
