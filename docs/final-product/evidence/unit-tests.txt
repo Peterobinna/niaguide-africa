@@ -1,0 +1,31 @@
+
+> niaguide-africa@0.1.0 test
+> node scripts/run-ts.cjs
+
+Γ£ö suggestions stay scoped to curated available collections (3.0455ms)
+Γ£ö imported PostgreSQL expert IDs pass while malformed IDs fail (3.4016ms)
+Γ£ö all real experts remain unanswerable even for relevant questions (0.4248ms)
+Γ£ö relevant synthetic questions retrieve passages (0.8672ms)
+Γ£ö unrelated, weak, and high-stakes questions fail closed (0.3389ms)
+Γ£ö validation bounds input and rejects invalid expert identifiers (0.6327ms)
+Γ£ö claim verification rejects missing sources, invented quotes, and model-supplied markers (0.5034ms)
+Γ£ö catalogue contains exactly 20 real draft profiles and one fictional expert (0.2064ms)
+Γ£ö follow-ups accept short replies and context is bounded to the current expert (1.5464ms)
+Γ£ö clarification and search plans are mutually exclusive and bounded (2.834ms)
+Γ£ö meaning-aware searches retain original search, deduplicate evidence and fail on database errors (1.5079ms)
+Γ£ö multi-query retrieval fits the database citation limit before generation (0.7609ms)
+Γ£ö evidence selection preserves transcript whitespace and never trusts model quotes (2.12ms)
+Γ£ö long and unpunctuated evidence stays scoped and covers passage ends (0.8323ms)
+Γ£ö diagnostics identify failures without including source or question text (1.4897ms)
+Γ£ö generation retries invalid quotes once and accepts only verified claims (0.3365ms)
+Γ£ö persistent invalid generation fails separately from insufficient evidence (0.2999ms)
+Γ£ö genuine insufficiency is not retried or forced into an answer (0.2342ms)
+Γ£ö null output fails closed after one retry (0.2168ms)
+Γä╣ tests 19
+Γä╣ suites 0
+Γä╣ pass 19
+Γä╣ fail 0
+Γä╣ cancelled 0
+Γä╣ skipped 0
+Γä╣ todo 0
+Γä╣ duration_ms 361.8884

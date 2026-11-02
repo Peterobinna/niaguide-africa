@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { demoMode, experts } from "@/lib/catalogue";
+import { demoMode, type Expert } from "@/lib/catalogue";
 import { readLocal, type LocalAnswer } from "@/lib/local-history";
 import { Empty, ExpertCard } from "./ui";
 import { AnswerCard } from "./answer-card";
@@ -30,8 +30,10 @@ type DbRow = {
 };
 export function History({
   kind,
+  collections = [],
 }: {
   kind: "dashboard" | "questions" | "saved";
+  collections?: Expert[];
 }) {
   const [rows, setRows] = useState<LocalAnswer[]>([]);
   const [loading, setLoading] = useState(true);
@@ -123,7 +125,10 @@ export function History({
                 {[
                   [rows.length, "Questions explored"],
                   [rows.filter((r) => r.saved).length, "Saved answers"],
-                  [demoMode ? 1 : 0, "Demo collections"],
+                  [
+                    collections.filter((e) => e.status === "available").length,
+                    demoMode ? "Demo collections" : "Available collections",
+                  ],
                 ].map(([n, t]) => (
                   <div className="stat" key={String(t)}>
                     <strong>{n}</strong>
@@ -176,7 +181,9 @@ export function History({
               description={
                 kind === "saved"
                   ? "Save an answer after asking a question. It will appear here."
-                  : "You haven’t asked a question yet. Explore the fictional demo to get started."
+                  : demoMode
+                    ? "You haven’t asked a question yet. Explore the fictional demo to get started."
+                    : "You haven’t asked a question yet. Browse the collections and check their source availability."
               }
             />
           )}
@@ -205,7 +212,7 @@ export function History({
             </Link>
           </div>
           <div className="grid-3">
-            {[experts[20], experts[3], experts[11]].map((e) => (
+            {collections.slice(0, 3).map((e) => (
               <ExpertCard expert={e} key={e.id} />
             ))}
           </div>

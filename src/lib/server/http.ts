@@ -1,5 +1,8 @@
 import "server-only";
-export async function readBody(request: Request): Promise<unknown> {
+export async function readBody(
+  request: Request,
+  maxBytes = 8192,
+): Promise<unknown> {
   const origin = request.headers.get("origin");
   // Next's internal request URL can differ from the incoming host behind a proxy.
   // Compare to Host, which a cross-origin browser cannot forge for this request.
@@ -14,7 +17,7 @@ export async function readBody(request: Request): Promise<unknown> {
     const { done, value } = await reader.read();
     if (done) break;
     bytes += value.byteLength;
-    if (bytes > 8192) {
+    if (bytes > maxBytes) {
       await reader.cancel();
       throw new Error("SIZE");
     }

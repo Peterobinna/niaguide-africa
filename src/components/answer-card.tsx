@@ -81,8 +81,14 @@ export function AnswerCard({
       <h2 style={{ marginTop: 16 }}>
         {answer.insufficient
           ? "Let’s try another question."
-          : "A perspective to reflect on"}
+          : "Guidance you can put into practice"}
       </h2>
+      {!answer.insufficient && !answer.synthetic && (
+        <p className="muted">
+          Practical steps and examples are AI-created applications of the source
+          lessons. Check whether they fit your situation.
+        </p>
+      )}
       <p className="answer-copy">
         {answer.answer.split(/(\[\d+\])/).map((part, i) =>
           /^\[\d+\]$/.test(part) ? (

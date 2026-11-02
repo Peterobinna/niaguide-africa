@@ -1,0 +1,9 @@
+{
+  "date": "2026-10-31",
+  "method": "read-only aggregate SQL in Supabase dashboard",
+  "realProfiles": 24,
+  "availableRealCollections": 16,
+  "approvedDocuments": 211,
+  "passagesInApprovedDocuments": 3880,
+  "scope": "Aggregate counts only; no participant records selected; not an audio or rights audit."
+}

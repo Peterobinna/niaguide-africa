@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-31",
+  "environment": "in-app Chromium; Windows; production localhost:3100; existing authenticated browser session",
+  "observedViewport": {
+    "width": 1280,
+    "height": 720,
+    "documentWidth": 1265
+  },
+  "checks": [
+    {
+      "case": "Joyce speaking preparation",
+      "result": "PASS",
+      "model": "gpt-4.1-mini",
+      "displayedLatencyMs": 8758,
+      "passages": 4,
+      "sourceExpanded": true,
+      "publishedSourceLinkVisible": true,
+      "saveAcknowledged": true,
+      "savedQuestionVisibleAfterReload": true
+    },
+    {
+      "case": "Adesina leadership",
+      "result": "FAIL_STORAGE",
+      "generation": "verified",
+      "passages": 4,
+      "databaseCode": "22P05",
+      "draftPreserved": true,
+      "cause": "unresolved"
+    },
+    {
+      "case": "mobile390x844",
+      "result": "NOT_VERIFIED",
+      "reason": "Requested viewport override did not apply; measured size remained1280x720 after reload/new tab."
+    }
+  ],
+  "screenshotFiles": "Browser capture worked but filesystem save returned EPERM; no new screenshots claimed.",
+  "limitations": [
+    "No real-phone or hardware comparison",
+    "No two-account isolation test",
+    "No semantic benchmark",
+    "No full feedback/report persistence test"
+  ]
+}

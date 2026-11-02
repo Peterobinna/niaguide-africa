@@ -1,11 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, LockKeyhole } from "lucide-react";
 import { demoId, demoMode, privacyWarning, type Expert } from "@/lib/catalogue";
 import type { AnswerResult } from "@/lib/retrieval";
 import { Disclosure } from "./ui";
 import { AnswerCard } from "./answer-card";
 import { addLocalAnswer } from "@/lib/local-history";
+import { appendExchange, type Conversation } from "@/lib/conversation";
+import { suggestedQuestions } from "@/lib/suggested-questions";
+
 export function AskForm({
   initialExpert,
   experts,
@@ -23,119 +26,235 @@ export function AskForm({
   const [question, setQuestion] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [answer, setAnswer] = useState<AnswerResult | null>(null);
+  const [messages, setMessages] = useState<AnswerResult[]>([]);
+  const [pending, setPending] = useState("");
+  const [context, setContext] = useState<Conversation>();
+  const latest = useRef<HTMLDivElement>(null);
+  const transcript = useRef<HTMLDivElement>(null);
+  const input = useRef<HTMLTextAreaElement>(null);
+  const sending = useRef(false);
+  useEffect(() => {
+    if ((messages.length || pending) && latest.current && transcript.current)
+      transcript.current.scrollTo({
+        top: latest.current.offsetTop - 16,
+        behavior: "instant",
+      });
+  }, [messages.length, pending]);
+  useEffect(() => {
+    if (!busy && messages.length) input.current?.focus({ preventScroll: true });
+  }, [busy, messages.length]);
+  function reset() {
+    setMessages([]);
+    setContext(undefined);
+    setQuestion("");
+    setError("");
+    setPending("");
+  }
   async function submit(event: React.FormEvent) {
     event.preventDefault();
+    if (sending.current || question.trim().length < 2) return;
+    sending.current = true;
+    const sent = question;
     setBusy(true);
+    setPending(sent);
     setError("");
-    setAnswer(null);
     try {
       const response = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ expertId: expert, question }),
+        body: JSON.stringify({
+          expertId: expert,
+          question: sent,
+          context: demoMode ? undefined : context,
+        }),
       });
       const data = await response.json();
       if (!response.ok)
-        throw new Error(data.error || "Unable to submit your question.");
-      setAnswer(data);
-      if (demoMode) addLocalAnswer(data);
+        throw new Error(data.error || "Unable to send. Please try again.");
+      setMessages((previous) => [...previous, data]);
+      if (!demoMode)
+        setContext(appendExchange(expert, context, sent, data.answer));
+      else if (data.kind !== "clarification") addLocalAnswer(data);
+      setQuestion("");
     } catch (e) {
       setError(
-        e instanceof Error ? e.message : "Something went wrong. Please retry.",
+        e instanceof Error
+          ? e.message
+          : "Unable to send. Your reply is still below so you can retry.",
       );
     } finally {
+      setPending("");
       setBusy(false);
+      sending.current = false;
     }
   }
   return (
-    <>
-      <div className="panel">
-        <form className="question-form" onSubmit={submit}>
-          <div className="field">
-            <label htmlFor="expert">Choose an expert collection</label>
-            <select
-              id="expert"
-              value={expert}
-              onChange={(e) => {
-                setExpert(e.target.value);
-                setAnswer(null);
-              }}
-            >
-              {experts.map((e) => (
-                <option key={e.id} value={e.id}>
-                  {e.name}
-                  {e.synthetic
-                    ? " · Fictional demonstration"
-                    : e.status !== "available"
-                      ? " · Sources unavailable"
-                      : ""}
-                </option>
-              ))}
-            </select>
-          </div>
-          {demoMode && (
-            <div className="notice">
-              Demo mode: answers are retrieved excerpts from original fictional
-              notes. No live AI generation or real-expert guidance is used.
-            </div>
-          )}
-          <label htmlFor="question">What’s on your mind?</label>
-          <textarea
-            id="question"
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            minLength={12}
-            maxLength={1200}
-            required
-            placeholder="For example: How can I explore a career and practise a new skill?"
-          />
-          <div className="privacy">
-            <LockKeyhole size={13} />
-            <span>{privacyWarning}</span>
-          </div>
-          <div className="suggestions">
-            {[
-              "How can I explore a career and practise a new skill?",
-              "How can I lead a student project?",
-              "How do I test a business idea?",
-            ].map((s) => (
-              <button type="button" key={s} onClick={() => setQuestion(s)}>
-                {s}
-              </button>
+    <section className="guidance-chat" aria-label="Chat with NiaGuide">
+      <div className="chat-toolbar">
+        <div>
+          <label htmlFor="expert">Expert collection</label>
+          <select
+            id="expert"
+            value={expert}
+            disabled={busy}
+            onChange={(e) => {
+              setExpert(e.target.value);
+              reset();
+            }}
+          >
+            {experts.map((e) => (
+              <option key={e.id} value={e.id}>
+                {e.name}
+                {e.synthetic
+                  ? " · Fictional demonstration"
+                  : e.status !== "available"
+                    ? " · Sources unavailable"
+                    : ""}
+              </option>
             ))}
+          </select>
+        </div>
+        <button
+          type="button"
+          className="text-link"
+          disabled={busy || !messages.length}
+          onClick={reset}
+        >
+          New chat
+        </button>
+      </div>
+      <div
+        ref={transcript}
+        className="chat-transcript"
+        role="region"
+        aria-label="Conversation"
+        tabIndex={0}
+      >
+        {!messages.length && !busy && (
+          <div className="chat-welcome">
+            <h2>What would you like help with?</h2>
+            <p>
+              Ask in your own words. We’ll look for useful lessons in this
+              expert’s sources.
+            </p>
+            <div className="suggestions">
+              {suggestedQuestions(experts.find((e) => e.id === expert)).map(
+                (s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => {
+                      setQuestion(s);
+                      input.current?.focus();
+                    }}
+                  >
+                    {s}
+                  </button>
+                ),
+              )}
+            </div>
           </div>
-          <button className="button" disabled={busy || !expert}>
-            {busy ? "Finding supporting passages…" : "Find guidance"}{" "}
-            {!busy && <ArrowUpRight size={17} />}
-          </button>
-          <span className="muted" style={{ marginLeft: 15 }}>
-            {question.length}/1,200
-          </span>
-        </form>
+        )}
+        {messages.map((answer, i) => (
+          <div
+            className="chat-exchange"
+            key={answer.id}
+            ref={i === messages.length - 1 && !pending ? latest : undefined}
+          >
+            <div className="chat-user">
+              <strong>You</strong>
+              <p>{answer.question}</p>
+            </div>
+            <div className="chat-assistant">
+              <strong className="chat-speaker">NiaGuide</strong>
+              {answer.kind === "clarification" ? (
+                <div className="chat-clarification">
+                  <p>{answer.answer}</p>
+                </div>
+              ) : (
+                <AnswerCard
+                  answer={answer}
+                  onFollowUp={() => input.current?.focus()}
+                />
+              )}
+            </div>
+          </div>
+        ))}
+        {pending && (
+          <div className="chat-exchange" ref={latest}>
+            <div className="chat-user">
+              <strong>You</strong>
+              <p>{pending}</p>
+            </div>
+            <p role="status">NiaGuide is checking the sources…</p>
+          </div>
+        )}
+      </div>
+      <form className="chat-composer" onSubmit={submit}>
         {error && (
-          <p className="error" role="alert" style={{ marginTop: 15 }}>
+          <p className="error" role="alert">
             {error}
           </p>
         )}
-        <div role="status" aria-live="polite">
-          {busy && (
-            <p className="muted">
-              Searching the selected collection before preparing an answer.
-            </p>
-          )}
-        </div>
-      </div>
-      {answer && (
-        <AnswerCard
-          answer={answer}
-          onFollowUp={() => {
-            setQuestion("");
-            document.getElementById("question")?.focus();
+        <label htmlFor="question">
+          {messages.length ? "Your reply" : "Your question"}
+        </label>
+        <textarea
+          ref={input}
+          id="question"
+          value={question}
+          readOnly={busy}
+          onChange={(e) => setQuestion(e.target.value)}
+          minLength={2}
+          maxLength={1200}
+          required
+          rows={2}
+          placeholder="Type here…"
+          onKeyDown={(e) => {
+            if (
+              e.key === "Enter" &&
+              !e.shiftKey &&
+              !e.nativeEvent.isComposing
+            ) {
+              e.preventDefault();
+              if (!busy) e.currentTarget.form?.requestSubmit();
+            }
           }}
         />
-      )}
-      <Disclosure />
-    </>
+        <div className="chat-send-row">
+          <span className="muted">
+            {question.length}/1,200 · Enter to send · Shift + Enter for a new
+            line
+          </span>
+          <button
+            className="button"
+            disabled={busy || !expert || question.trim().length < 2}
+          >
+            {busy ? "Working…" : "Send"}
+            <ArrowUpRight size={17} />
+          </button>
+        </div>
+        <div className="privacy">
+          <LockKeyhole size={13} />
+          <span>{privacyWarning}</span>
+        </div>
+      </form>
+      <details className="chat-about">
+        <summary>About this chat and your privacy</summary>
+        <p className="muted">
+          Messages stay visible in this tab. In live mode, the last two
+          exchanges are sent to the AI for follow-ups. New chat, changing expert
+          or refreshing clears this conversation, but does not delete saved
+          question history.
+        </p>
+        {demoMode && (
+          <p className="notice">
+            Demo mode uses fictional excerpts without live AI or conversation
+            understanding.
+          </p>
+        )}
+        <Disclosure />
+      </details>
+    </section>
   );
 }

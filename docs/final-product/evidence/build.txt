@@ -1,0 +1,8 @@
+31 October2026 | npm run build | EXIT0
+Next.js16.3.6 Turbopack
+Compiled successfully in15.4s
+TypeScript completed
+Generated19 static pages
+Final page optimization completed
+Local production server started on3100.
+This is a summary of observed command output,not a full raw build log.

@@ -1,0 +1,146 @@
+{
+  "date": "2026-10-31",
+  "mode": "production live configuration, unauthenticated HTTP requests",
+  "base": "http://localhost:3100",
+  "node": "v24.11.1",
+  "platform": "win32",
+  "tests": [
+    {
+      "name": "GET /",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "ms": 143
+    },
+    {
+      "name": "GET /experts",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "ms": 690
+    },
+    {
+      "name": "GET /ask",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "ms": 427
+    },
+    {
+      "name": "GET /about",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "ms": 9
+    },
+    {
+      "name": "GET /how-it-works",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "ms": 11
+    },
+    {
+      "name": "GET /sign-in",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "ms": 8
+    },
+    {
+      "name": "GET /register",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "ms": 19
+    },
+    {
+      "name": "GET /sources",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "ms": 19
+    },
+    {
+      "name": "GET /dashboard",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "ms": 529
+    },
+    {
+      "name": "GET /saved",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "ms": 11
+    },
+    {
+      "name": "valid signed-out request",
+      "status": 401,
+      "expected": 401,
+      "pass": true,
+      "ms": 18,
+      "message": "Sign in before asking a live question."
+    },
+    {
+      "name": "invalid expert identifier",
+      "status": 400,
+      "expected": 400,
+      "pass": true,
+      "ms": 12,
+      "message": "Invalid GUID"
+    },
+    {
+      "name": "empty question",
+      "status": 400,
+      "expected": 400,
+      "pass": true,
+      "ms": 8,
+      "message": "Please enter your question or reply."
+    },
+    {
+      "name": "overlong question",
+      "status": 400,
+      "expected": 400,
+      "pass": true,
+      "ms": 8,
+      "message": "Keep your question under 1,200 characters."
+    },
+    {
+      "name": "cross-origin rejected",
+      "status": 400,
+      "expected": 400,
+      "pass": true,
+      "ms": 6,
+      "message": "Invalid request. Send a small JSON question from this site."
+    },
+    {
+      "name": "malformed JSON rejected",
+      "status": 400,
+      "expected": 400,
+      "pass": true,
+      "ms": 6,
+      "message": "Invalid request. Send a small JSON question from this site."
+    },
+    {
+      "name": "body above32KiB rejected",
+      "status": 400,
+      "expected": 400,
+      "pass": true,
+      "ms": 8,
+      "message": "Invalid request. Send a small JSON question from this site."
+    }
+  ],
+  "passed": 17,
+  "total": 17,
+  "performance": {
+    "route": "/",
+    "samples": 10,
+    "medianMs": 10,
+    "p95Ms": 13,
+    "minMs": 7,
+    "maxMs": 13,
+    "note": "Sequential local HTTP round trips; not browser rendering, AI latency or load testing."
+  }
+}

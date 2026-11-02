@@ -9,7 +9,7 @@ export async function PATCH(request: Request) {
     return failure("Invalid request.");
   }
   const parsed = z
-    .object({ id: z.uuid(), status: z.enum(["available", "review", "coming"]) })
+    .object({ id: z.guid(), status: z.enum(["available", "review", "coming"]) })
     .safeParse(body);
   if (!parsed.success) return failure("Invalid collection update.");
   const db = await serverDb();
