@@ -4,10 +4,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Compass } from "lucide-react";
 import { browserDb } from "@/lib/supabase/client";
-export function AuthForm({ register = false }: { register?: boolean }) {
+export function AuthForm({
+  register = false,
+  confirmationError = false,
+}: { register?: boolean; confirmationError?: boolean }) {
   const router = useRouter();
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [pendingEmail, setPendingEmail] = useState("");
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setBusy(true);
@@ -15,9 +19,9 @@ export function AuthForm({ register = false }: { register?: boolean }) {
     const data = new FormData(e.currentTarget);
     try {
       const db = browserDb();
-      const email = String(data.get("email"));
+      const email = String(data.get("email")).trim();
       const password = String(data.get("password"));
-      const { error } = register
+      const result = register
         ? await db.auth.signUp({
             email,
             password,
@@ -27,14 +31,18 @@ export function AuthForm({ register = false }: { register?: boolean }) {
             },
           })
         : await db.auth.signInWithPassword({ email, password });
-      if (error)
+      if (result.error?.code === "email_not_confirmed") {
+        setPendingEmail(email);
+        return;
+      }
+      if (result.error)
         throw new Error(
           register
             ? "Registration could not be completed. Check your details or try signing in."
             : "Sign-in failed. Check your email and password.",
         );
-      if (register)
-        setMessage("Check your email to confirm your account, then sign in.");
+      if (register && !result.data.session)
+        setPendingEmail(email);
       else {
         router.push("/dashboard");
         router.refresh();
@@ -47,6 +55,18 @@ export function AuthForm({ register = false }: { register?: boolean }) {
       setBusy(false);
     }
   }
+  if (pendingEmail) {
+    return (
+      <div className="auth-card">
+        <h1>Check your email</h1>
+        <p>Open the confirmation link sent to <strong>{pendingEmail}</strong> to finish setting up your account.</p>
+        <p>Check your spam folder if you do not see the email. Open the link in the same browser you used to sign up.</p>
+        {register ? <Link href="/sign-in">Go to sign in</Link> : (
+          <button type="button" className="button" onClick={() => setPendingEmail("")}>Back to sign in</button>
+        )}
+      </div>
+    );
+  }
   return (
     <div className="auth-card">
       <Compass color="#0F766E" size={30} />
@@ -56,6 +76,9 @@ export function AuthForm({ register = false }: { register?: boolean }) {
           ? "Create your NiaGuide account to keep your questions and saved answers."
           : "Sign in to return to your questions and saved perspectives."}
       </p>
+      {confirmationError && (
+        <p role="alert">We could not finish confirming your email. Try signing in if you already confirmed it. If sign-in says your email is unconfirmed, request a new confirmation email by creating your account again.</p>
+      )}
       <form onSubmit={submit}>
         {register && (
           <div className="field">
