@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, Compass, BookOpen, ShieldCheck } from "lucide-react";
-import { disclosure, statusLabel, type Expert } from "@/lib/catalogue";
+import { disclosure, expertPath, statusLabel, type Expert } from "@/lib/catalogue";
 export function Wordmark() {
   return (
     <Link href="/" className="wordmark">
@@ -25,7 +25,7 @@ export function ExpertCard({ expert }: { expert: Expert }) {
   return (
     <Link
       className={`expert-card ${expert.synthetic ? "demo-card" : ""}`}
-      href={`/experts/${expert.id}`}
+      href={expertPath(expert)}
     >
       <div className="card-top">
         <span className="avatar">
@@ -46,7 +46,11 @@ export function ExpertCard({ expert }: { expert: Expert }) {
         <span>{expert.country}</span>
         <span>
           <BookOpen size={14} />
-          {expert.synthetic ? "4 demo notes" : "Collection in preparation"}
+          {expert.synthetic
+            ? "4 demo notes"
+            : expert.status === "available"
+              ? "View sources"
+              : "Collection in preparation"}
         </span>
       </div>
       {expert.synthetic && <small>Fictional Demonstration Expert</small>}

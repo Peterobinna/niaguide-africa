@@ -1,20 +1,28 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { Disclosure } from "@/components/ui";
-import { demoSources, statusLabel } from "@/lib/catalogue";
+import { demoSources, expertPath, statusLabel, type Expert } from "@/lib/catalogue";
 import { getCatalogue } from "@/lib/server/catalogue";
 import { serverDb } from "@/lib/supabase/server";
+
+async function findExpert(id: string): Promise<Expert | undefined> {
+  const catalogue = await getCatalogue();
+  return catalogue.find((expert) => expert.id === id) ??
+    catalogue.find((expert) => expertPath(expert) === `/experts/${id}`);
+}
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const expert = await findExpert(id);
+  if (!expert) return { title: "Expert collection" };
   return {
-    title:
-      (await getCatalogue()).find((e) => e.id === id)?.name ??
-      "Expert collection",
+    title: expert.name,
+    description: expert.description,
+    alternates: { canonical: expertPath(expert) },
   };
 }
 export default async function Profile({
@@ -23,8 +31,10 @@ export default async function Profile({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const e = (await getCatalogue()).find((e) => e.id === id);
+  const e = await findExpert(id);
   if (!e) notFound();
+  const path = expertPath(e);
+  if (path !== `/experts/${id}`) permanentRedirect(path);
   const db = e.synthetic ? null : await serverDb();
   const { data: documents } = db
     ? await db

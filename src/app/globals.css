@@ -1003,16 +1003,39 @@ td select {
   text-decoration: underline;
 }
 .history-item {
-  padding: 22px;
   border: 1px solid var(--line);
   border-radius: 8px;
   margin-bottom: 15px;
 }
-.history-item h3 {
-  font-size: 16px;
+.history-toggle {
+  display: block;
+  padding: 22px;
+  border-radius: inherit;
+  cursor: pointer;
+  list-style: none;
 }
-.history-item p {
-  font-size: 12px;
+.history-toggle::-webkit-details-marker {
+  display: none;
+}
+.history-toggle:hover,
+.history-toggle:focus-visible {
+  background: var(--cream);
+}
+.history-question {
+  display: block;
+  margin-top: 10px;
+  color: var(--navy);
+  font-size: 16px;
+  font-weight: 700;
+}
+.history-answer {
+  padding: 0 22px 22px;
+}
+a:not(.button, .expert-card, .wordmark):hover,
+.history-toggle:hover .text-link,
+.history-toggle:focus-visible .text-link {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .category-grid {
   display: flex;

@@ -7,7 +7,21 @@ export type Expert = {
   status: CollectionStatus;
   synthetic: boolean;
   description: string;
+  profileSlug?: string;
 };
+
+export function expertSlug(name: string) {
+  return name
+    .normalize("NFKD")
+    .replace(/\p{M}/gu, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+export function expertPath(expert: Expert) {
+  return `/experts/${(expert.profileSlug ?? expertSlug(expert.name)) || expert.id}`;
+}
 const entries = [
   ["Aliko Dangote", "Entrepreneurship and Industry", "Nigeria"],
   ["Ngozi Okonjo-Iweala", "Economics and Global Leadership", "Nigeria"],

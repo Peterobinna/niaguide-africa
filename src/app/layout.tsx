@@ -9,8 +9,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 export const metadata: Metadata = {
+  metadataBase: new URL("https://niaguide-africa.vercel.app"),
   title: {
-    default: "NiaGuide Africa — Guidance rooted in African wisdom",
+    default: "NiaGuide Africa | Guidance rooted in African wisdom",
     template: "%s | NiaGuide Africa",
   },
   description:

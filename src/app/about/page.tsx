@@ -5,15 +5,15 @@ export default function About() {
     <div className="container page-shell prose">
       <PageHeading
         eyebrow="BUILT FOR CURIOSITY AND PURPOSE"
-        title="African perspectives. A more accessible starting point."
-        description="NiaGuide Africa is an independent final-year Full Stack capstone project exploring source-grounded AI guidance."
+        title="About NiaGuide Africa"
+        description="NiaGuide Africa is a final-year software engineering project that helps students explore guidance from published African expert sources."
       />
       <h2>The problem we’re exploring</h2>
       <p>
         Young people often admire African leaders and experts but cannot speak
         with them directly. Useful ideas are spread across interviews, speeches,
-        articles, books, podcasts, and videos. Finding a relevant passage — and
-        knowing whether it supports an answer — takes time.
+        articles, books, podcasts, and videos. It takes time to find a relevant
+        passage and check whether it supports an answer.
       </p>
       <h2>Who it is for</h2>
       <p>

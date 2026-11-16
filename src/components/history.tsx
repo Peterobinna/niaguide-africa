@@ -141,35 +141,30 @@ export function History({
           )}
           {visible.length ? (
             visible.map((row) => (
-              <div key={row.id}>
-                <div className="history-item">
+              <details className="history-item" key={row.id}>
+                <summary className="history-toggle">
                   <span className="muted">
                     {new Date(row.createdAt).toLocaleDateString("en-GB")} ·{" "}
                     {row.synthetic
                       ? "Fictional demonstration"
                       : "Your collection"}
                   </span>
-                  <h3 style={{ marginTop: 10 }}>{row.question}</h3>
-                  <details>
-                    <summary
-                      className="text-link"
-                      style={{ cursor: "pointer" }}
-                    >
-                      Read guidance & sources
-                    </summary>
-                    <AnswerCard
-                      answer={row}
-                      onSavedChange={(saved) =>
-                        setRows((current) =>
-                          current.map((item) =>
-                            item.id === row.id ? { ...item, saved } : item,
-                          ),
-                        )
-                      }
-                    />
-                  </details>
+                  <span className="history-question">{row.question}</span>
+                  <span className="text-link">Read guidance &amp; sources</span>
+                </summary>
+                <div className="history-answer">
+                  <AnswerCard
+                    answer={row}
+                    onSavedChange={(saved) =>
+                      setRows((current) =>
+                        current.map((item) =>
+                          item.id === row.id ? { ...item, saved } : item,
+                        ),
+                      )
+                    }
+                  />
                 </div>
-              </div>
+              </details>
             ))
           ) : (
             <Empty

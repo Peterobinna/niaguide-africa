@@ -10,8 +10,9 @@ import {
   Check,
 } from "lucide-react";
 import { Disclosure, ExpertCard } from "@/components/ui";
-import { experts } from "@/lib/catalogue";
-export default function Home() {
+import { getCatalogue } from "@/lib/server/catalogue";
+export default async function Home() {
+  const featured = (await getCatalogue()).filter((expert) => expert.status === "available").slice(0, 3);
   return (
     <>
       <section className="hero">
@@ -127,13 +128,12 @@ export default function Home() {
           </Link>
         </div>
         <div className="grid-3">
-          {[experts[1], experts[4], experts[20]].map((e) => (
+          {featured.map((e) => (
             <ExpertCard key={e.id} expert={e} />
           ))}
         </div>
         <p className="section-footnote">
-          Real-expert collections are in preparation. Inclusion does not imply
-          participation, approval, or endorsement.
+          Inclusion does not imply participation, approval, or endorsement.
         </p>
       </section>
       <section className="steps-section">
