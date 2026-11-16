@@ -4,13 +4,20 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { Wordmark } from "./ui";
-export function Header() {
+export function Header({ signedIn }: { signedIn: boolean }) {
   const [open, setOpen] = useState(false);
   const path = usePathname();
   return (
     <header className="header">
       <div className="container header-inner">
         <Wordmark />
+        <Link
+          className="mobile-account-link"
+          href={signedIn ? "/dashboard" : "/sign-in"}
+          onClick={() => setOpen(false)}
+        >
+          {signedIn ? "Dashboard" : "Sign In"}
+        </Link>
         <button
           className="menu-toggle"
           aria-label="Toggle navigation"
@@ -39,15 +46,15 @@ export function Header() {
             </Link>
           ))}
           <div className="nav-auth">
-            <Link href="/sign-in" onClick={() => setOpen(false)}>
-              Sign In
+            <Link href={signedIn ? "/dashboard" : "/sign-in"} onClick={() => setOpen(false)}>
+              {signedIn ? "Dashboard" : "Sign In"}
             </Link>
             <Link
               className="button small"
               href="/ask"
               onClick={() => setOpen(false)}
             >
-              Get Started <ArrowUpRight size={15} />
+              Ask NiaGuide <ArrowUpRight size={15} />
             </Link>
           </div>
         </nav>

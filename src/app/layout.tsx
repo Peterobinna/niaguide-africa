@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Header } from "@/components/header";
 import { Wordmark } from "@/components/ui";
 import { demoMode } from "@/lib/catalogue";
+import { currentUser } from "@/lib/supabase/server";
 import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
@@ -15,18 +16,19 @@ export const metadata: Metadata = {
   description:
     "Explore African expert collections and source-grounded guidance. A student capstone with transparent citations and a clearly labelled fictional demonstration.",
 };
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = await currentUser();
   return (
     <html lang="en">
       <body className={`${inter.variable} ${manrope.variable}`}>
         <a className="skip-link" href="#main">
           Skip to content
         </a>
-        <Header />
+        <Header signedIn={Boolean(user)} />
         {demoMode && (
           <div className="demo-banner">
             CAPSTONE PREVIEW{" "}

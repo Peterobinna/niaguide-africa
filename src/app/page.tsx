@@ -17,20 +17,13 @@ export default function Home() {
       <section className="hero">
         <div className="container hero-grid">
           <div className="hero-copy">
-            <div className="hero-kicker">
-              <span /> AFRICAN PERSPECTIVES. YOUR POSSIBILITIES.
-            </div>
             <h1>
-              Your questions.
-              <br />
-              African wisdom.
-              <br />
-              <em>A clearer path.</em>
+              Ask a question. <em>Explore the sources.</em>
             </h1>
             <p className="hero-lead">
-              Explore ideas from African leaders and experts. Find thoughtful
-              guidance grounded in published sources — and see where every
-              insight comes from.
+              Ask about careers, skills, or personal growth. NiaGuide uses
+              published material from African experts and links to the sources
+              that support its answers.
             </p>
             <div className="button-row">
               <Link className="button" href="/experts">

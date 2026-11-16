@@ -29,6 +29,13 @@ export function WorkspaceNav() {
           className="text-link"
           onClick={async () => {
             await browserDb().auth.signOut();
+            try {
+              for (const key of Object.keys(sessionStorage)) {
+                if (key.startsWith("niaguide-chat:")) sessionStorage.removeItem(key);
+              }
+            } catch {
+              // Sign-out can continue when browser storage is unavailable.
+            }
             router.push("/");
             router.refresh();
           }}

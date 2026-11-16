@@ -35,6 +35,12 @@ export function AuthForm({
         setPendingEmail(email);
         return;
       }
+      if (result.error?.code === "email_address_not_authorized") {
+        throw new Error("We can’t send a confirmation email to this address right now. Please contact NiaGuide support.");
+      }
+      if (result.error?.code === "over_email_send_rate_limit" || result.error?.status === 429) {
+        throw new Error("Too many attempts. Please wait a few minutes and try again.");
+      }
       if (result.error)
         throw new Error(
           register
@@ -77,7 +83,7 @@ export function AuthForm({
           : "Sign in to return to your questions and saved perspectives."}
       </p>
       {confirmationError && (
-        <p role="alert">We could not finish confirming your email. Try signing in if you already confirmed it. If sign-in says your email is unconfirmed, request a new confirmation email by creating your account again.</p>
+        <p role="alert" style={{ color: "#b42318" }}>We could not finish confirming your email. Try signing in if you already confirmed it. If sign-in says your email is unconfirmed, request a new confirmation email by creating your account again.</p>
       )}
       <form onSubmit={submit}>
         {register && (
@@ -120,9 +126,7 @@ export function AuthForm({
           {busy ? "Connecting…" : register ? "Create account" : "Sign in"}
         </button>
       </form>
-      <p role="status" style={{ marginTop: 16 }}>
-        {message}
-      </p>
+      {message && <p role="alert" style={{ marginTop: 16, color: "#b42318" }}>{message}</p>}
       <p>
         {register ? "Already have an account?" : "New to NiaGuide?"}{" "}
         <Link href={register ? "/sign-in" : "/register"}>

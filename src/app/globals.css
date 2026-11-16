@@ -98,6 +98,7 @@ p {
   margin-inline: auto;
 }
 .header {
+  position: relative;
   background: #fff;
   border-bottom: 1px solid var(--line);
 }
@@ -143,6 +144,9 @@ p {
   align-items: center;
   gap: 22px;
   margin-left: 18px;
+}
+.mobile-account-link {
+  display: none;
 }
 .button {
   display: inline-flex;
@@ -1121,6 +1125,21 @@ td select {
   }
   .header-inner {
     height: 74px;
+    gap: 8px;
+  }
+  .header-inner .wordmark {
+    font-size: clamp(16px, 4vw, 21px);
+  }
+  .mobile-account-link {
+    display: inline-flex;
+    align-items: center;
+    margin-left: auto;
+    min-height: 44px;
+    padding-inline: 4px;
+    color: var(--green);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
   }
   .menu-toggle {
     display: block;
@@ -1128,7 +1147,7 @@ td select {
   .main-nav {
     display: none;
     position: absolute;
-    top: 74px;
+    top: 100%;
     left: 0;
     right: 0;
     z-index: 30;
@@ -1147,7 +1166,11 @@ td select {
   .nav-auth {
     border-top: 1px solid var(--line);
     padding-top: 18px;
+    margin-left: 0;
     justify-content: space-between;
+  }
+  .nav-auth > a:first-child {
+    display: none;
   }
   .demo-banner {
     font-size: 8px;

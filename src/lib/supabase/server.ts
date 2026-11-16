@@ -1,6 +1,12 @@
 import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { cache } from "react";
+
+export const currentUser = cache(async () => {
+  const db = await serverDb();
+  return db ? (await db.auth.getUser()).data.user : null;
+});
 export async function serverDb() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;

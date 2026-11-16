@@ -11,13 +11,18 @@ export function Explorer({ experts = catalogue }: { experts?: Expert[] }) {
   const [country, setCountry] = useState("");
   const [field, setField] = useState("");
   const [status, setStatus] = useState("");
-  const filtered = experts.filter(
-    (e) =>
-      (e.name + " " + e.field).toLowerCase().includes(search.toLowerCase()) &&
+  const terms = (search.toLowerCase().match(/[\p{L}\p{N}]+/gu) ?? []).filter(
+    (term) => !["and", "or", "in", "for", "the"].includes(term),
+  );
+  const filtered = experts.filter((e) => {
+    const profile = `${e.name} ${e.field} ${e.description}`.toLowerCase();
+    return (
+      terms.every((term) => profile.includes(term)) &&
       (!country || e.country === country) &&
       (!field || e.field.toLowerCase().includes(field.toLowerCase())) &&
-      (!status || e.status === status),
-  );
+      (!status || e.status === status)
+    );
+  });
   return (
     <>
       <div className="filters">
@@ -26,7 +31,7 @@ export function Explorer({ experts = catalogue }: { experts?: Expert[] }) {
           <input
             id="search"
             type="search"
-            placeholder="Try leadership, writing, or a name…"
+            placeholder="Try public speaking, leadership, or a name"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -42,6 +47,7 @@ export function Explorer({ experts = catalogue }: { experts?: Expert[] }) {
             {[
               "Entrepreneurship",
               "Leadership",
+              "Public Speaking",
               "Technology",
               "Education",
               "Writing",
@@ -109,7 +115,7 @@ export function Explorer({ experts = catalogue }: { experts?: Expert[] }) {
       ) : (
         <div className="empty">
           <h3>No matching collections</h3>
-          <p>Try another name or reset your filters.</p>
+          <p>Try one topic at a time, or reset your filters.</p>
         </div>
       )}
     </>

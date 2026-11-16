@@ -12,9 +12,11 @@ import { suggestedQuestions } from "@/lib/suggested-questions";
 export function AskForm({
   initialExpert,
   experts,
+  userId,
 }: {
   initialExpert?: string;
   experts: Expert[];
+  userId?: string;
 }) {
   const [expert, setExpert] = useState(
     initialExpert && experts.some((e) => e.id === initialExpert)
@@ -33,6 +35,50 @@ export function AskForm({
   const transcript = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
   const sending = useRef(false);
+  const [restored, setRestored] = useState(false);
+  const storageKey = userId ? `niaguide-chat:${userId}` : "";
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      try {
+        const stored = storageKey && sessionStorage.getItem(storageKey);
+        if (stored) {
+          const chat = JSON.parse(stored) as {
+            expert: string;
+            question: string;
+            messages: AnswerResult[];
+            context?: Conversation;
+          };
+          if (
+            (!initialExpert || initialExpert === chat.expert) &&
+            experts.some((item) => item.id === chat.expert) &&
+            typeof chat.question === "string" &&
+            Array.isArray(chat.messages)
+          ) {
+            setExpert(chat.expert);
+            setQuestion(chat.question);
+            setMessages(chat.messages);
+            setContext(chat.context);
+          }
+        }
+      } catch {
+        // The chat still works when browser storage is unavailable.
+      }
+      setRestored(true);
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [storageKey, initialExpert, experts]);
+  useEffect(() => {
+    if (!storageKey || !restored) return;
+    try {
+      if (question || messages.length) {
+        sessionStorage.setItem(storageKey, JSON.stringify({ expert, question, messages, context }));
+      } else {
+        sessionStorage.removeItem(storageKey);
+      }
+    } catch {
+      // Browser storage is optional.
+    }
+  }, [storageKey, restored, expert, question, messages, context]);
   useEffect(() => {
     if ((messages.length || pending) && latest.current && transcript.current)
       transcript.current.scrollTo({
@@ -242,10 +288,10 @@ export function AskForm({
       <details className="chat-about">
         <summary>About this chat and your privacy</summary>
         <p className="muted">
-          Messages stay visible in this tab. In live mode, the last two
-          exchanges are sent to the AI for follow-ups. New chat, changing expert
-          or refreshing clears this conversation, but does not delete saved
-          question history.
+          When signed in, this tab keeps your current chat and draft if it
+          reloads. In live mode, the last two exchanges are sent to the AI for
+          follow-ups. New chat, changing expert, or signing out clears the
+          chat from this tab. Saved questions remain in your account.
         </p>
         {demoMode && (
           <p className="notice">
