@@ -61,6 +61,7 @@ export default async function RootLayout({
               <Link href="/dashboard">Dashboard</Link>
               <Link href="/saved">Saved answers</Link>
               <Link href="/profile">Profile & privacy</Link>
+              <Link href="/privacy">Privacy policy</Link>
             </div>
             <div>
               <strong>Built on transparency</strong>

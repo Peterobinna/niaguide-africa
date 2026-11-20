@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ProfileSettings } from "@/components/profile-settings";
 import { WorkspaceNav } from "@/components/workspace-nav";
 import { PageHeading } from "@/components/ui";
@@ -6,12 +7,9 @@ export default function Profile() {
   return (
     <div className="container page-shell">
       <WorkspaceNav />
-      <PageHeading
-        eyebrow="YOUR SPACE, YOUR CHOICES"
-        title="Profile & privacy"
-        description="Manage your profile and understand what happens to your questions."
-      />
+      <PageHeading eyebrow="YOUR SPACE, YOUR CHOICES" title="Profile & privacy" description="Manage your profile and understand what happens to your questions." />
       <ProfileSettings />
+      <p style={{ marginTop: 20 }}><Link href="/privacy">Read the full privacy policy and how to request deletion</Link></p>
     </div>
   );
 }
