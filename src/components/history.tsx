@@ -112,7 +112,7 @@ export function History({
         </div>
       )}
       {loading ? (
-        <p role="status">Loading your workspaceâ€¦</p>
+        <p role="status">Loading your workspace…</p>
       ) : error ? (
         <div className="error" role="alert">
           {error}{" "}
@@ -150,7 +150,7 @@ export function History({
               <details className="history-item" key={row.id}>
                 <summary className="history-toggle">
                   <span className="muted">
-                    {new Date(row.createdAt).toLocaleDateString("en-GB")} Â·{" "}
+                    {new Date(row.createdAt).toLocaleDateString("en-GB")} ·{" "}
                     {row.synthetic
                       ? "Fictional demonstration"
                       : "Your collection"}
@@ -183,8 +183,8 @@ export function History({
                 kind === "saved"
                   ? "Save an answer after asking a question. It will appear here."
                   : demoMode
-                    ? "You havenâ€™t asked a question yet. Explore the fictional demo to get started."
-                    : "You havenâ€™t asked a question yet. Browse the collections and check their source availability."
+                    ? "You haven’t asked a question yet. Explore the fictional demo to get started."
+                    : "You haven’t asked a question yet. Browse the collections and check their source availability."
               }
             />
           )}
@@ -202,14 +202,14 @@ export function History({
               "Purposeful living",
             ].map((t) => (
               <Link href="/ask" key={t}>
-                {t} â†—
+                {t} ↗
               </Link>
             ))}
           </div>
           <div className="section-heading" style={{ marginTop: 40 }}>
             <h2>Collections to discover</h2>
             <Link className="text-link" href="/saved">
-              View saved answers â†’
+              View saved answers →
             </Link>
           </div>
           <div className="grid-3">
