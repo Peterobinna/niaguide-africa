@@ -440,3 +440,30 @@ test("null output fails closed after one retry", async () => {
     "validation_failed",
   );
 });
+
+
+test("short questions and follow-ups use the same input rules", () => {
+  for (const question of ["Hi", "Why?", "How?", "😀😀", "Her career", "x".repeat(11), "x".repeat(12), "x".repeat(1200)]) {
+    const parsed = questionSchema.safeParse({ expertId: demoId, question });
+    assert.ok(parsed.success, question.slice(0, 20));
+  }
+  for (const question of ["", " ", "x", "😀", " x ", "\t\n", "x".repeat(1201)]) {
+    assert.equal(questionSchema.safeParse({ expertId: demoId, question }).success, false);
+  }
+  const clean = questionSchema.parse({ expertId: demoId, question: "  Why?\n " });
+  assert.equal(clean.question, "Why?");
+  const context = appendExchange(demoId, undefined, "How do I prepare?", "Practise your introduction.");
+  assert.ok(questionSchema.safeParse({ expertId: demoId, question: "How?", context }).success);
+});
+
+test("planner questions obey the storage limits without blocking clarifications", () => {
+  const plan = { needsClarification: false, clarification: "", standaloneQuestion: "Why?", queries: ["career skills"] };
+  for (const question of ["Hi", "Why?", "How?", "x".repeat(1200)]) {
+    assert.equal(checkedPlan({ ...plan, standaloneQuestion: question })?.standaloneQuestion, question);
+  }
+  for (const question of ["", "x", "  x  ", "\n\t", "x".repeat(1201)]) {
+    assert.equal(checkedPlan({ ...plan, standaloneQuestion: question }), null);
+  }
+  assert.equal(checkedPlan({ ...plan, standaloneQuestion: "  How?\n" })?.standaloneQuestion, "How?");
+  assert.ok(checkedPlan({ needsClarification: true, clarification: "Which goal?", standaloneQuestion: "", queries: [] }));
+});

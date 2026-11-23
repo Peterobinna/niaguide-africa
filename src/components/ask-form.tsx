@@ -9,6 +9,7 @@ import { AnswerCard } from "./answer-card";
 import { addLocalAnswer } from "@/lib/local-history";
 import { appendExchange, type Conversation } from "@/lib/conversation";
 import { suggestedQuestions } from "@/lib/suggested-questions";
+import { MIN_QUESTION_LENGTH, MAX_QUESTION_LENGTH, questionTextSchema } from "@/lib/question-text";
 
 export function AskForm({
   initialExpert,
@@ -110,9 +111,14 @@ export function AskForm({
   async function submit(event: React.FormEvent) {
     // Handle Send here instead of letting the browser navigate away when the form submits.
     event.preventDefault();
-    if (sending.current || question.trim().length < 2) return;
+    if (sending.current) return;
+    const parsedQuestion = questionTextSchema.safeParse(question);
+    if (!parsedQuestion.success) {
+      setError(parsedQuestion.error.issues[0].message);
+      return;
+    }
     sending.current = true;
-    const sent = question;
+    const sent = parsedQuestion.data;
     setBusy(true);
     setPending(sent);
     setError("");
@@ -271,8 +277,8 @@ export function AskForm({
           value={question}
           readOnly={busy}
           onChange={(e) => setQuestion(e.target.value)}
-          minLength={2}
-          maxLength={1200}
+          minLength={MIN_QUESTION_LENGTH}
+          maxLength={MAX_QUESTION_LENGTH}
           required
           rows={2}
           placeholder="Type here…"
@@ -294,7 +300,7 @@ export function AskForm({
           </span>
           <button
             className="button"
-            disabled={busy || !expert || question.trim().length < 2}
+            disabled={busy || !expert || question.trim().length < MIN_QUESTION_LENGTH}
           >
             {busy ? "Working…" : "Send"}
             <ArrowUpRight size={17} />

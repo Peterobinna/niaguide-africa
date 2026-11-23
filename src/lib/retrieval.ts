@@ -2,16 +2,13 @@
 import { z } from "zod";
 import { demoId, demoSources, type Source } from "./catalogue";
 import { conversationSchema } from "./conversation";
+import { questionTextSchema } from "./question-text";
 // Describe what a live question request is allowed to contain and how long the text can be.
 export const questionSchema = z.object({
   // PostgreSQL also stores imported UUIDs without RFC version/variant bits.
   expertId: z.guid(),
   context: conversationSchema.optional(),
-  question: z
-    .string()
-    .max(1200, "Keep your question under 1,200 characters.")
-    .transform((s) => s.replace(/[\u0000-\u001f\u007f]/g, " ").trim())
-    .pipe(z.string().min(2, "Please enter your question or reply.")),
+  question: questionTextSchema,
 });
 const stop = new Set(
   "what how can could should would about with from this that have your their into when where which want help need some does please more there they them then".split(

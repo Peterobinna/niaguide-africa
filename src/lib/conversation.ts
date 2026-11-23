@@ -1,6 +1,7 @@
 // These helpers keep a little recent context, check the search plan and combine results from several searches.
 import { z } from "zod";
 import type { Source } from "./catalogue";
+import { questionTextSchema } from "./question-text";
 
 export const conversationSchema = z.object({
   expertId: z.guid(),
@@ -74,7 +75,7 @@ Resolve "you" as referring to the selected expert when appropriate; never impers
 Preserve the ORIGINAL GOAL across clarification. For example: previous question="How can I become like you?", previous reply="Which aspect: career, confidence or leadership?", latest question="Her career" means "How can I develop my career by learning from the selected expert's experience?" It does NOT mean "What is her biography or list of achievements?" Suitable search phrases are "career learning", "skills experience", "career development". Another example: previous topic=preparing a presentation, latest="How do I start?" means starting preparation for that presentation, not starting a business.
 For a vague aspiration such as "How can I become like you?", ask ONE short, friendly question about which aspect they mean (such as career, confidence or leadership). Keep these choices generic: do not add biographical details about the selected expert. Do not assume an aspect or answer it. Also clarify an unresolved "How do I start?" without context. Do not repeatedly clarify when the student has supplied the missing aspect. A clear question needs no clarification even if the answer might not exist in the collection.
 When clarification is needed: needsClarification=true, clarification is ONLY a question (at most 300 characters), standaloneQuestion="", queries=[].
-Otherwise: needsClarification=false, clarification="", standaloneQuestion is a faithful standalone version of the student's question (at most 1200 characters), queries contains 1 to 3 different search phrases of 2 to 4 meaningful words each. Translate everyday language to related concepts and synonyms: e.g. fear of presenting to confidence public speaking, feeling stuck to persistence setbacks, keeping club money accountable to transparency financial systems. Do not use expert names or filler words as search terms. Do not change the student's intent or broaden into unrelated topics. Never output advice.`;
+Otherwise: needsClarification=false, clarification="", standaloneQuestion is a faithful standalone version of the student's question (2 to 1200 characters), queries contains 1 to 3 different search phrases of 2 to 4 meaningful words each. Translate everyday language to related concepts and synonyms: e.g. fear of presenting to confidence public speaking, feeling stuck to persistence setbacks, keeping club money accountable to transparency financial systems. Do not use expert names or filler words as search terms. Do not change the student's intent or broaden into unrelated topics. Never output advice.`;
 
 // Check whether the model returned a valid clarification or a usable plan to search the sources.
 export function checkedPlan(value: unknown) {
@@ -90,15 +91,18 @@ export function checkedPlan(value: unknown) {
       p.standaloneQuestion
     )
       return null;
-  } else if (
-    !p.standaloneQuestion.trim() ||
-    p.standaloneQuestion.length > 1200 ||
-    p.clarification ||
-    !p.queries.length ||
-    p.queries.length > 3 ||
-    p.queries.some((q) => !q.trim() || q.length > 160)
-  )
-    return null;
+  } else {
+    // The rewritten question must also be valid when it is saved.
+    const question = questionTextSchema.safeParse(p.standaloneQuestion);
+    if (
+      !question.success ||
+      p.clarification ||
+      !p.queries.length ||
+      p.queries.length > 3 ||
+      p.queries.some((q) => !q.trim() || q.length > 160)
+    ) return null;
+    p.standaloneQuestion = question.data;
+  }
   return p;
 }
 

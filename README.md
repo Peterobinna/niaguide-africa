@@ -74,7 +74,7 @@ For a fresh installation, copy .env.example to .env.local and enter your own val
 | OPENAI_MODEL | Optional supported structured-output model |
 | NEXT_PUBLIC_DEMO_MODE | false live / true fictional demo; rebuild after changing |
 
-For a **new database only**, review/apply migrations in filename order: foundation, catalogue, ranked retrieval. Configure Supabase auth site URL/callback allowlist. Existing live tables already exist: **do not rerun foundation/catalogue migrations**. Sources need recorded reuse basis, review and linked passages before activation. Do not grant ordinary users source-write/admin access. Document ingestion UI is deferred.
+For a **new database only**, review/apply migrations in filename order: foundation, catalogue, ranked retrieval, then `202611230001_short_questions.sql`. Configure Supabase auth site URL/callback allowlist. Existing live tables already exist: **do not rerun foundation/catalogue migrations**. Sources need recorded reuse basis, review and linked passages before activation. Do not grant ordinary users source-write/admin access. Document ingestion UI is deferred.
 
 Production:
 
@@ -89,6 +89,7 @@ npm start
 npm run lint
 npm run typecheck
 npm test
+npm run test:db
 npm run build
 ```
 
@@ -147,3 +148,9 @@ Attempt 1: repository URL with report and actual accessible video links. Attempt
 OpenAI Codex assisted with planning, implementation, debugging, tests and documentation. Student review, explanation and course acknowledgement requirements remain the student's responsibility; no claim of independent authorship/full personal code review.
 
 "AI-generated guidance based on selected published sources. NiaGuide does not represent, impersonate or speak on behalf of the featured expert. Check the cited sources before making important decisions."
+
+## Short-question update — 23 November 2026
+
+The form, API and rewritten planner question use a 2–1,200 character rule. A new migration, `supabase/migrations/202611230001_short_questions.sql`, replaces the old 12-character database minimum. Existing databases need this migration too; deploying the app alone does not change the database. Do not rerun the foundation migration on a live database.
+
+`npm run test:db` reproduces the old short-question failure and checks the migration in a temporary local PostgreSQL engine. It keeps existing records and tests short inputs, length limits, authentication, source checks and function permissions. It does not connect to Supabase or certify live RLS/account isolation. See `docs/SHORT_QUESTION_UPDATE.md` for rollout and verification.

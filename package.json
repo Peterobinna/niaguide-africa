@@ -12,7 +12,8 @@
     "seed:generate": "node scripts/run-ts.cjs scripts/seed.ts",
     "test:smoke": "node scripts/smoke.cjs",
     "format": "prettier --write src scripts tests",
-    "setup:demo": "node scripts/setup-demo.cjs"
+    "setup:demo": "node scripts/setup-demo.cjs",
+    "test:db": "node --test tests/short-questions-db.test.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
@@ -26,6 +27,7 @@
     "zod": "4.6.5"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.6.0",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "26.6.3",
     "@types/react": "19.3.0",
