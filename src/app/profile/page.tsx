@@ -1,3 +1,4 @@
+// This page gives the student a place to edit their display name and read the privacy information.
 import Link from "next/link";
 import { ProfileSettings } from "@/components/profile-settings";
 import { WorkspaceNav } from "@/components/workspace-nav";

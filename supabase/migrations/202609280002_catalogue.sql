@@ -1,3 +1,4 @@
+-- This migration adds the starting expert profiles. Source documents and passages are attached separately.
 -- Neutral draft catalogue from the supplied project brief. No endorsements or sources.
 insert into public.experts(id,name,field,country,description,status,synthetic) values
 ('00000000-0000-4000-8000-000000000001','Aliko Dangote','Entrepreneurship and Industry','Nigeria','A proposed entrepreneurship and industry collection connected to Aliko Dangote. Published materials have not yet been approved for use. Catalogue inclusion does not imply endorsement or authorisation.','review',false),

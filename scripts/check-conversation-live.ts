@@ -1,3 +1,4 @@
+// This diagnostic checks the conversation path with configured live services.
 // Opt-in: five paid planning calls. Uses only synthetic test conversations.
 import assert from "node:assert/strict";
 import OpenAI from "openai";

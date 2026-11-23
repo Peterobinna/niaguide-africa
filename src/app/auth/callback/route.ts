@@ -1,3 +1,4 @@
+// The email confirmation link comes back here. Supabase exchanges its temporary code for a signed-in session.
 import { NextResponse } from "next/server";
 import { serverDb } from "@/lib/supabase/server";
 export async function GET(request: Request) {

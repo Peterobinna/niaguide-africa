@@ -1,3 +1,4 @@
+// This page explains why I built NiaGuide, who it serves, and where its guidance comes from.
 import { PageHeading, Disclosure } from "@/components/ui";
 export const metadata = { title: "About the project" };
 export default function About() {

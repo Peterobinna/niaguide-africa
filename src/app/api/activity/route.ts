@@ -1,6 +1,8 @@
+// This route reads a student's history and handles actions such as saving, voting on, or reporting an answer.
 import { z } from "zod";
 import { serverDb } from "@/lib/supabase/server";
 import { readBody, failure } from "@/lib/server/http";
+// Each button action has its own required fields. Check those fields before touching the database.
 const schema = z.discriminatedUnion("action", [
   z.object({
     action: z.literal("save"),
@@ -34,6 +36,7 @@ export async function POST(request: Request) {
   } = await db.auth.getUser();
   if (!user) return failure("Please sign in.", 401);
   const v = parsed.data;
+  // Look up the answer for this account before allowing the requested change.
   const { data: answer } = await db
     .from("answers")
     .select("id")
@@ -67,6 +70,7 @@ export async function POST(request: Request) {
     return failure("Could not save your change. Please retry.", 503);
   return Response.json({ ok: true });
 }
+// Read this account's stored answers and the related questions, citations and save records.
 export async function GET() {
   const db = await serverDb();
   if (!db) return failure("The database is not configured.", 503);

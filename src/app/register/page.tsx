@@ -1,3 +1,4 @@
+// I reuse AuthForm here. The register option tells it to create an account.
 import Link from "next/link";
 import { AuthForm } from "@/components/auth-form";
 export const metadata = { title: "Create account" };

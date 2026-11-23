@@ -1,3 +1,4 @@
+// This file defines expert and source data, common notices and the built-in demo material.
 export type CollectionStatus = "available" | "review" | "coming";
 export type Expert = {
   id: string;
@@ -10,6 +11,7 @@ export type Expert = {
   profileSlug?: string;
 };
 
+// Turn an expert name into lowercase URL words joined by hyphens.
 export function expertSlug(name: string) {
   return name
     .normalize("NFKD")
@@ -87,6 +89,7 @@ export type Source = {
   content: string;
   synthetic: boolean;
 };
+// These fictional passages let someone try the search without a live expert collection.
 export const demoSources: Source[] = [
   {
     id: "10000000-0000-4000-8000-000000000001",

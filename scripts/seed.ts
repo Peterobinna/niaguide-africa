@@ -1,3 +1,4 @@
+// This script turns the initial expert profiles into SQL statements for review.
 import { writeFileSync } from "node:fs";
 import { experts } from "../src/lib/catalogue";
 const quote = (s: string) => `'${s.replaceAll("'", "''")}'`;

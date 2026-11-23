@@ -1,3 +1,4 @@
+// These helpers read JSON from a request and return errors in a consistent format.
 import "server-only";
 export async function readBody(
   request: Request,
@@ -8,6 +9,7 @@ export async function readBody(
   // Compare to Host, which a cross-origin browser cannot forge for this request.
   if (origin && new URL(origin).host !== request.headers.get("host"))
     throw new Error("ORIGIN");
+  // Read the request in small chunks so I can stop if it grows past the size limit.
   const reader = request.body?.getReader();
   if (!reader) throw new Error("BODY");
   const decoder = new TextDecoder();
@@ -26,6 +28,7 @@ export async function readBody(
   text += decoder.decode();
   return JSON.parse(text);
 }
+// Send errors back as JSON so the chat and other screens can show a message.
 export function failure(message: string, status = 400) {
   return Response.json({ error: message }, { status });
 }

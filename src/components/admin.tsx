@@ -1,4 +1,5 @@
 "use client";
+// This screen displays the collections and sends status changes to the admin route for approval.
 import { useState } from "react";
 import {
   type Expert,
@@ -31,6 +32,7 @@ export function Admin({
   const [rows, setRows] = useState(initialExperts);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  // Send the chosen status to the server. The server and database decide if this change is allowed.
   async function change(id: string, status: CollectionStatus) {
     setBusy(true);
     setMessage("");

@@ -1,3 +1,4 @@
+// This runner lets Node load the TypeScript tests and helper scripts.
 /* eslint-disable @typescript-eslint/no-require-imports -- Isolated CommonJS test runner for Windows environments where tsx cannot read the OS user profile. */
 const fs = require("node:fs");
 const path = require("node:path");

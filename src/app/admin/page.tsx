@@ -1,3 +1,4 @@
+// I check the account role before loading the collection review screen.
 import { redirect } from "next/navigation";
 import { Admin } from "@/components/admin";
 import { PageHeading } from "@/components/ui";
@@ -46,6 +47,7 @@ export default async function AdminPage() {
     .eq("id", user.id)
     .single();
   if (profile?.role !== "admin") redirect("/dashboard");
+  // Load the review lists and counts together so the page does not wait for each one in turn.
   const responses = await Promise.all([
     db.from("experts").select("*"),
     db.from("source_documents").select("*"),

@@ -1,4 +1,5 @@
 "use client";
+// This component filters the expert list as a student searches or changes a dropdown.
 import { useState } from "react";
 import {
   experts as catalogue,
@@ -11,9 +12,11 @@ export function Explorer({ experts = catalogue }: { experts?: Expert[] }) {
   const [country, setCountry] = useState("");
   const [field, setField] = useState("");
   const [status, setStatus] = useState("");
+  // Break the search into words so a name and topic can match different parts of the same profile.
   const terms = (search.toLowerCase().match(/[\p{L}\p{N}]+/gu) ?? []).filter(
     (term) => !["and", "or", "in", "for", "the"].includes(term),
   );
+  // Keep a profile only if it matches the search words and the selected dropdown filters.
   const filtered = experts.filter((e) => {
     const profile = `${e.name} ${e.field} ${e.description}`.toLowerCase();
     return (

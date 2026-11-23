@@ -1,3 +1,4 @@
+// This diagnostic uses a Ngozi example to check the live model and evidence path.
 // Opt-in diagnostic: uses local approved import copies; never prints credentials.
 import fs from "node:fs";
 import OpenAI from "openai";

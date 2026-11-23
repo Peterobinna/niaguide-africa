@@ -1,3 +1,4 @@
+// This is the homepage. I load the expert catalogue here so the featured cards reflect the collections students can use.
 import Link from "next/link";
 import {
   ArrowRight,

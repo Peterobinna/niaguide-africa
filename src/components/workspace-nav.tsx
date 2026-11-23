@@ -1,4 +1,5 @@
 "use client";
+// This menu connects the student pages and provides a way to sign out.
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { browserDb } from "@/lib/supabase/client";

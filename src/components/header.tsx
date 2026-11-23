@@ -1,4 +1,5 @@
 "use client";
+// The header shows the main links and changes the account link based on whether the student is signed in.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";

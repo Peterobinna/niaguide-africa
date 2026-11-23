@@ -1,3 +1,4 @@
+// This route lets a signed-in administrator change a collection's availability.
 import { z } from "zod";
 import { serverDb } from "@/lib/supabase/server";
 import { readBody, failure } from "@/lib/server/http";
@@ -23,6 +24,7 @@ export async function PATCH(request: Request) {
     .select("role")
     .eq("id", user.id)
     .single();
+  // Checking the role on the server protects the action even if someone calls the route without opening the admin page.
   if (profile?.role !== "admin") return failure("Admin access required.", 403);
   const { data, error } = await db
     .from("experts")

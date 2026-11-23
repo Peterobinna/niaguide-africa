@@ -1,3 +1,4 @@
+// I use this server helper to load live expert profiles and give them readable links.
 import "server-only";
 import { cache } from "react";
 import { demoMode, experts, expertSlug, type Expert } from "../catalogue";
@@ -15,6 +16,7 @@ export const getCatalogue = cache(async (): Promise<Expert[]> => {
       "The expert catalogue is temporarily unavailable. Please try again.",
     );
   const profiles: Expert[] = data;
+  // Count profiles with the same readable URL so two people cannot share the same link.
   const counts = new Map<string, number>();
   for (const { name } of profiles) {
     const slug = expertSlug(name);

@@ -1,4 +1,5 @@
 "use client";
+// I share this form between sign-up and sign-in so both pages use the same input and error handling.
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -12,6 +13,7 @@ export function AuthForm({
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [pendingEmail, setPendingEmail] = useState("");
+  // Read the form values and send them to Supabase Auth for sign-up or sign-in.
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setBusy(true);
@@ -21,6 +23,7 @@ export function AuthForm({
       const db = browserDb();
       const email = String(data.get("email")).trim();
       const password = String(data.get("password"));
+      // The register flag decides which Supabase account action to call.
       const result = register
         ? await db.auth.signUp({
             email,
@@ -61,6 +64,7 @@ export function AuthForm({
       setBusy(false);
     }
   }
+  // When confirmation is still needed, show the next step before the student tries to sign in.
   if (pendingEmail) {
     return (
       <div className="auth-card">

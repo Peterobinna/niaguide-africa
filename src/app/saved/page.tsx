@@ -1,3 +1,4 @@
+// This page tells History to show the answers the student saved.
 import { PageHeading } from "@/components/ui";
 import { WorkspaceNav } from "@/components/workspace-nav";
 import { History } from "@/components/history";

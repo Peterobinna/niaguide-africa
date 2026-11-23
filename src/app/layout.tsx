@@ -1,3 +1,4 @@
+// Every page uses this layout. It adds the shared navigation, fonts, page metadata, and footer.
 import type { Metadata } from "next";
 import { Inter, Manrope } from "next/font/google";
 import Link from "next/link";

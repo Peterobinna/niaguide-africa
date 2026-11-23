@@ -1,3 +1,4 @@
+// These helpers keep a little recent context, check the search plan and combine results from several searches.
 import { z } from "zod";
 import type { Source } from "./catalogue";
 
@@ -14,10 +15,12 @@ export const conversationSchema = z.object({
 });
 export type Conversation = z.infer<typeof conversationSchema>;
 
+// Only carry follow-up context forward when it belongs to the same expert.
 export function contextForExpert(expertId: string, context?: Conversation) {
   return context?.expertId === expertId ? context.turns : [];
 }
 
+// Add the latest exchange and keep the last two for follow-up questions.
 export function appendExchange(
   expertId: string,
   context: Conversation | undefined,
@@ -73,6 +76,7 @@ For a vague aspiration such as "How can I become like you?", ask ONE short, frie
 When clarification is needed: needsClarification=true, clarification is ONLY a question (at most 300 characters), standaloneQuestion="", queries=[].
 Otherwise: needsClarification=false, clarification="", standaloneQuestion is a faithful standalone version of the student's question (at most 1200 characters), queries contains 1 to 3 different search phrases of 2 to 4 meaningful words each. Translate everyday language to related concepts and synonyms: e.g. fear of presenting to confidence public speaking, feeling stuck to persistence setbacks, keeping club money accountable to transparency financial systems. Do not use expert names or filler words as search terms. Do not change the student's intent or broaden into unrelated topics. Never output advice.`;
 
+// Check whether the model returned a valid clarification or a usable plan to search the sources.
 export function checkedPlan(value: unknown) {
   const parsed = searchPlanSchema.safeParse(value);
   if (!parsed.success) return null;
@@ -98,6 +102,7 @@ export function checkedPlan(value: unknown) {
   return p;
 }
 
+// Clean up the search phrases so the expert name does not dominate their own collection search.
 export function collectionQueries(queries: string[], expertName: string) {
   const names = new Set(expertName.toLowerCase().match(/[\p{L}]+/gu) ?? []);
   const filler = new Set([
@@ -131,6 +136,7 @@ export function collectionQueries(queries: string[], expertName: string) {
 }
 
 // Search variants never bypass the database's expert/rights/approval filters.
+// Search the question and its alternate phrases, then combine and rank the unique passages.
 export async function retrieveWithPlan(
   original: string,
   queries: string[],

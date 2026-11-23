@@ -1,3 +1,4 @@
+// This page tells History to show past questions and their guidance.
 import { PageHeading } from "@/components/ui";
 import { WorkspaceNav } from "@/components/workspace-nav";
 import { History } from "@/components/history";

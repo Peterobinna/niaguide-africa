@@ -1,3 +1,4 @@
+// This script creates local settings for the fictional demo if the settings file is missing.
 /* eslint-disable @typescript-eslint/no-require-imports -- Standalone Node setup script. */
 const fs = require("node:fs");
 const path = require("node:path");

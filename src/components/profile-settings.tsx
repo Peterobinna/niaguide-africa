@@ -1,4 +1,5 @@
 "use client";
+// This component loads and updates the display name. In demo mode it can clear fictional history from this browser.
 import { useEffect, useState } from "react";
 import { demoMode } from "@/lib/catalogue";
 import { clearLocal } from "@/lib/local-history";
@@ -7,6 +8,7 @@ export function ProfileSettings() {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   useEffect(() => {
+    // Read the display name from the account before filling in the name field.
     async function loadProfile() {
       if (demoMode) return;
       try {

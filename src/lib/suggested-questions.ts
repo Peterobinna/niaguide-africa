@@ -1,3 +1,4 @@
+// These are the questions the app can suggest before a student types their own.
 import type { Expert } from "./catalogue";
 
 // Curated against the approved collection, not the expert's general reputation.

@@ -1,4 +1,5 @@
 "use client";
+// The dashboard, questions and saved pages share this component. The mode controls which records appear.
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { demoMode, type Expert } from "@/lib/catalogue";
@@ -40,6 +41,7 @@ export function History({
   const [error, setError] = useState("");
   useEffect(() => {
     let active = true;
+    // Read from browser storage for the demo or from the server when a live account is signed in.
     async function load() {
       try {
         if (demoMode) {
@@ -91,6 +93,7 @@ export function History({
       active = false;
     };
   }, []);
+  // Use the same list for all three pages. Saved keeps only saved answers, while Dashboard shows the newest few.
   const visible =
     kind === "saved"
       ? rows.filter((r) => r.saved)

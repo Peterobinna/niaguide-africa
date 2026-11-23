@@ -1,8 +1,10 @@
+// This helper runs the answer-writing step and allows one retry if the output fails its checks.
 import { generatedSchema, claimIssues } from "./retrieval";
 import type { Source } from "./catalogue";
 
 // A failed generation is not evidence that the collection has no answer.
 // Retry once with the same approved sources; never relax quotation checks.
+// Keep the cases separate: there is too little evidence, the answer passes the checks, or the model reply needs repair.
 export async function checkedGeneration(
   sources: Source[],
   generate: (

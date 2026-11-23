@@ -1,3 +1,4 @@
+// I load the expert list on the server and hand it to Explorer so students can filter it in the browser.
 import { Explorer } from "@/components/explorer";
 import { PageHeading } from "@/components/ui";
 import { getCatalogue } from "@/lib/server/catalogue";

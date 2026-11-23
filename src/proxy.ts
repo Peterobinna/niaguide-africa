@@ -1,3 +1,4 @@
+// This runs for matching requests and gives Supabase a chance to refresh the login session.
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 export async function proxy(request: NextRequest) {
@@ -5,6 +6,7 @@ export async function proxy(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   if (!url || !key) return response;
+  // Let Supabase read the session cookies and add updated cookies to the response if needed.
   const supabase = createServerClient(url, key, {
     cookies: {
       getAll() {

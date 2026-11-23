@@ -1,3 +1,4 @@
+// This page looks up one expert. It uses the same record for page details, approved source previews, and the link to the chat.
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { ArrowRight, BookOpen } from "lucide-react";
@@ -33,6 +34,7 @@ export default async function Profile({
   const { id } = await params;
   const e = await findExpert(id);
   if (!e) notFound();
+  // Send old ID-based links to the readable profile URL when there is one.
   const path = expertPath(e);
   if (path !== `/experts/${id}`) permanentRedirect(path);
   const db = e.synthetic ? null : await serverDb();

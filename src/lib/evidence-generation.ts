@@ -1,7 +1,9 @@
+// I give excerpts IDs here so the model can refer to them and the server can attach the original text.
 import { z } from "zod";
 import type { Source } from "./catalogue";
 
 // The model selects evidence; the server copies it from the approved passage.
+// This is the shape of reply I ask the model to return. Each claim needs text and an evidence ID.
 export const evidenceSchema = z.object({
   sufficient: z.boolean(),
   claims: z.array(z.object({ text: z.string(), evidenceId: z.string() })),
@@ -9,6 +11,7 @@ export const evidenceSchema = z.object({
 
 export type Evidence = { id: string; sourceIndex: number; quote: string };
 
+// Break the source text into labelled excerpts so each claim can point to one.
 export function buildEvidence(sources: Source[]): Evidence[] {
   return sources.flatMap((source, index) => {
     const evidence: Evidence[] = [];
@@ -36,6 +39,7 @@ export function buildEvidence(sources: Source[]): Evidence[] {
   });
 }
 
+// Check the reply and look up its evidence IDs. The original quote comes from the saved excerpt.
 export function resolveEvidence(output: unknown, evidence: Evidence[]) {
   const parsed = evidenceSchema.safeParse(output);
   if (!parsed.success) return null;

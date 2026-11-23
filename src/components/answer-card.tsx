@@ -1,4 +1,5 @@
 "use client";
+// This component shows a reply and links its numbered citations to the source passages.
 import Link from "next/link";
 import { useState } from "react";
 import { Bookmark, ThumbsUp, ThumbsDown, Flag, ArrowRight } from "lucide-react";
@@ -14,12 +15,14 @@ export function AnswerCard({
   onFollowUp?: () => void;
   onSavedChange?: (saved: boolean) => void;
 }) {
+  // Remember the current save, feedback and report controls for this answer card.
   const [saved, setSaved] = useState(answer.saved ?? false);
   const [helpful, setHelpful] = useState<boolean | undefined>(answer.helpful);
   const [reportOpen, setReportOpen] = useState(false);
   const [reason, setReason] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  // Use one function for the buttons that save an answer, vote on it, or report a problem.
   async function act(
     action: "save" | "feedback" | "report",
     value: boolean | string,
@@ -104,6 +107,7 @@ export function AnswerCard({
           ),
         )}
       </p>
+      {/* Each source number in the answer links to one of these sections. */}
       {answer.sources.length > 0 && (
         <>
           <h3 style={{ marginTop: 28 }}>Explore the supporting sources</h3>

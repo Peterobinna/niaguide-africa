@@ -1,6 +1,8 @@
+// This file defines valid question data and includes search for the built-in fictional demo.
 import { z } from "zod";
 import { demoId, demoSources, type Source } from "./catalogue";
 import { conversationSchema } from "./conversation";
+// Describe what a live question request is allowed to contain and how long the text can be.
 export const questionSchema = z.object({
   // PostgreSQL also stores imported UUIDs without RFC version/variant bits.
   expertId: z.guid(),
@@ -25,6 +27,7 @@ export function terms(text: string) {
     ),
   ];
 }
+// Look for keywords in the fictional sources used by the demo.
 export function retrieveDemo(expertId: string, question: string): Source[] {
   if (
     expertId !== demoId ||
@@ -64,6 +67,7 @@ export function validateClaims(
 }
 
 // Codes and positions only: safe to log without exposing questions or quotations.
+// Check that every claim points to an existing source and that its quote matches the supplied text.
 export function claimIssues(
   data: z.infer<typeof generatedSchema>,
   sources: Source[],

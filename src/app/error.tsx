@@ -1,4 +1,5 @@
 "use client";
+// Next.js shows this screen when something unexpected goes wrong while drawing a page.
 export default function ErrorPage({ reset }: { reset: () => void }) {
   return (
     <div className="container page-shell">

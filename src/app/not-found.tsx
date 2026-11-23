@@ -1,3 +1,4 @@
+// This screen helps visitors get back to the site when a page or collection cannot be found.
 import Link from "next/link";
 export default function NotFound() {
   return (

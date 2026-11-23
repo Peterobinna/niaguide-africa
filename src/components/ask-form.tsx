@@ -1,4 +1,5 @@
 "use client";
+// This browser component handles the expert dropdown, chat messages, draft, and Send button.
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, LockKeyhole } from "lucide-react";
 import { demoId, demoMode, privacyWarning, type Expert } from "@/lib/catalogue";
@@ -18,6 +19,7 @@ export function AskForm({
   experts: Expert[];
   userId?: string;
 }) {
+  // Start with the expert in the page link if it matches our list. Otherwise pick the demo expert or the first available option in the list.
   const [expert, setExpert] = useState(
     initialExpert && experts.some((e) => e.id === initialExpert)
       ? initialExpert
@@ -25,19 +27,23 @@ export function AskForm({
         ? demoId
         : (experts[0]?.id ?? ""),
   );
+  // React state keeps what is typed, what is already in the chat, and what the screen should show while it waits.
   const [question, setQuestion] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [messages, setMessages] = useState<AnswerResult[]>([]);
   const [pending, setPending] = useState("");
   const [context, setContext] = useState<Conversation>();
+  // Refs point to parts of the page or keep a flag I need to read right away. Changing a ref does not redraw the screen.
   const latest = useRef<HTMLDivElement>(null);
   const transcript = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
   const sending = useRef(false);
   const [restored, setRestored] = useState(false);
+  // I use the signed-in account ID to keep its tab copy separate from other accounts.
   const storageKey = userId ? `niaguide-chat:${userId}` : "";
   useEffect(() => {
+    // Wait until the page is in the browser before I try to read its tab storage.
     const timer = window.setTimeout(() => {
       try {
         const stored = storageKey && sessionStorage.getItem(storageKey);
@@ -68,6 +74,7 @@ export function AskForm({
     return () => window.clearTimeout(timer);
   }, [storageKey, initialExpert, experts]);
   useEffect(() => {
+    // Load the saved chat before writing, so an empty form does not erase it.
     if (!storageKey || !restored) return;
     try {
       if (question || messages.length) {
@@ -80,6 +87,7 @@ export function AskForm({
     }
   }, [storageKey, restored, expert, question, messages, context]);
   useEffect(() => {
+    // Show the newest message without scrolling the whole page.
     if ((messages.length || pending) && latest.current && transcript.current)
       transcript.current.scrollTo({
         top: latest.current.offsetTop - 16,
@@ -87,8 +95,10 @@ export function AskForm({
       });
   }, [messages.length, pending]);
   useEffect(() => {
+    // Move the typing cursor back when the reply is ready so the student can continue.
     if (!busy && messages.length) input.current?.focus({ preventScroll: true });
   }, [busy, messages.length]);
+  // Start with an empty conversation when the student chooses New chat or changes experts.
   function reset() {
     setMessages([]);
     setContext(undefined);
@@ -96,7 +106,9 @@ export function AskForm({
     setError("");
     setPending("");
   }
+  // Sending takes time, so this function uses await to wait for the server's reply.
   async function submit(event: React.FormEvent) {
+    // Handle Send here instead of letting the browser navigate away when the form submits.
     event.preventDefault();
     if (sending.current || question.trim().length < 2) return;
     sending.current = true;
@@ -105,6 +117,7 @@ export function AskForm({
     setPending(sent);
     setError("");
     try {
+      // Send the question and expert ID to the Next.js backend. JSON is the text format they use to talk.
       const response = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -114,20 +127,24 @@ export function AskForm({
           context: demoMode ? undefined : context,
         }),
       });
+      // Turn the reply from JSON into data the chat can use.
       const data = await response.json();
       if (!response.ok)
         throw new Error(data.error || "Unable to send. Please try again.");
+      // The three dots copy the old messages into a new list. The new reply goes at the end.
       setMessages((previous) => [...previous, data]);
       if (!demoMode)
         setContext(appendExchange(expert, context, sent, data.answer));
       else if (data.kind !== "clarification") addLocalAnswer(data);
       setQuestion("");
     } catch (e) {
+      // Show what went wrong. The draft stays in the box so the student can try again.
       setError(
         e instanceof Error
           ? e.message
           : "Unable to send. Your reply is still below so you can retry.",
       );
+    // Run this after success or failure to clear the waiting state and let the student send again.
     } finally {
       setPending("");
       setBusy(false);
@@ -136,6 +153,7 @@ export function AskForm({
   }
   return (
     <section className="guidance-chat" aria-label="Chat with NiaGuide">
+      {/* The top bar lets the student pick an expert or start over. */}
       <div className="chat-toolbar">
         <div>
           <label htmlFor="expert">Expert collection</label>
@@ -201,6 +219,7 @@ export function AskForm({
             </div>
           </div>
         )}
+        {/* Draw one question and reply for each item in the messages list. */}
         {messages.map((answer, i) => (
           <div
             className="chat-exchange"
@@ -236,6 +255,7 @@ export function AskForm({
           </div>
         )}
       </div>
+      {/* Typing changes the draft. Submitting calls the send function above. */}
       <form className="chat-composer" onSubmit={submit}>
         {error && (
           <p className="error" role="alert">

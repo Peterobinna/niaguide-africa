@@ -1,3 +1,4 @@
+// This is the main question route. It takes a question from the chat and returns guidance with its sources or a message explaining the problem.
 import OpenAI from "openai";
 import { zodTextFormat } from "openai/helpers/zod";
 import { demoMode, insufficient, type Source } from "@/lib/catalogue";
@@ -37,10 +38,12 @@ export async function POST(request: Request) {
       "Invalid request. Send a small JSON question from this site.",
     );
   }
+  // Check that the request has the fields and values I expect before using it.
   const parsed = questionSchema.safeParse(body);
   if (!parsed.success) return failure(parsed.error.issues[0].message);
   const { expertId, question, context } = parsed.data;
   const recentConversation = contextForExpert(expertId, context);
+  // Start with an empty source list and the insufficient-evidence reply. Fill in the answer if the sources support one.
   const result: AnswerResult = {
     id: crypto.randomUUID(),
     question,
@@ -53,6 +56,7 @@ export async function POST(request: Request) {
     latencyMs: 0,
     createdAt: new Date().toISOString(),
   };
+  // The demo searches fictional notes and returns its result before the live steps.
   if (demoMode) {
     const sources = retrieveDemo(expertId, question);
     if (sources.length) {
@@ -67,6 +71,7 @@ export async function POST(request: Request) {
     return Response.json(result);
   }
   try {
+    // In live mode, use the signed-in visitor's database connection and check who is asking.
     const db = await serverDb();
     if (!db)
       return failure(
@@ -77,6 +82,7 @@ export async function POST(request: Request) {
       data: { user },
     } = await db.auth.getUser();
     if (!user) return failure("Sign in before asking a live question.", 401);
+    // Ask the database whether this account has another question available within its usage limit.
     const { data: allowed, error: limitError } =
       await db.rpc("reserve_question");
     if (limitError)
@@ -86,6 +92,7 @@ export async function POST(request: Request) {
         "You have reached the limit of 10 questions per hour. Please try later.",
         429,
       );
+    // Use the expert ID from the form to look up the real collection and its status.
     const { data: expert, error: expertError } = await db
       .from("experts")
       .select("name,field,status,synthetic")
@@ -100,6 +107,7 @@ export async function POST(request: Request) {
     let standaloneQuestion = question;
     let queries: string[] = [];
     if (expert.status === "available" && !expert.synthetic) {
+      // This first model request prepares words to search for. It does not write the final guidance.
       const planning = await client.responses.parse({
         model,
         store: false,
@@ -129,6 +137,7 @@ export async function POST(request: Request) {
           "I couldn’t understand that request just now. Please try again.",
           503,
         );
+      // If the question needs more detail and we can ask a follow-up, return that question to the chat.
       if (plan.needsClarification) {
         // Clarifications are conversational prompts, not sourced guidance records.
         return Response.json({
@@ -142,10 +151,12 @@ export async function POST(request: Request) {
       standaloneQuestion = plan.standaloneQuestion;
       queries = collectionQueries(plan.queries, expert.name);
     }
+    // Try the original question and the planned searches. The database gives us matching pieces of source text.
     const sources = await retrieveWithPlan(
       question,
       queries,
       async (search_text) => {
+        // Give the SQL search the selected expert and one search phrase so it can look in the right collection.
         const { data, error } = await db.rpc("retrieve_passages", {
           selected_expert: expertId,
           search_text,
@@ -155,7 +166,9 @@ export async function POST(request: Request) {
       },
     );
     if (sources.length) {
+      // Label the text excerpts so the model can point to a specific one for each claim.
       const evidence = buildEvidence(sources);
+      // Ask the model to write using the evidence. The helper can retry once if the reply fails validation.
       const outcome = await checkedGeneration(
         sources,
         async (repair, feedback) => {
@@ -201,11 +214,13 @@ export async function POST(request: Request) {
         status: outcome.status,
         sourceCount: sources.length,
       });
+      // If the output still fails, tell the student the service could not verify the reply.
       if (outcome.status === "validation_failed")
         return failure(
           "Relevant sources were found, but the answer could not be verified. Please try again.",
           503,
         );
+      // Put the source numbers beside the accepted claims and include the passages in the result.
       if (outcome.status === "verified") {
         const generated = outcome.generated;
         result.answer = generated.claims
@@ -221,6 +236,7 @@ export async function POST(request: Request) {
         sourceCount: 0,
       });
     result.latencyMs = Date.now() - started;
+    // Save the question, answer and source links together so the student can open them again.
     const { data: stored, error: storeError } = await db.rpc("store_guidance", {
       selected_expert: expertId,
       question_text: standaloneQuestion,
@@ -238,6 +254,7 @@ export async function POST(request: Request) {
       });
       return failure("Your answer could not be saved. Please try again.", 503);
     }
+    // Use the database ID for this answer before sending it back to the browser.
     result.id = stored;
     return Response.json(result);
   } catch {

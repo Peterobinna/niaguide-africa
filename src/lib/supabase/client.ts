@@ -1,4 +1,5 @@
 "use client";
+// The pages use this browser connection for account actions such as sign-in.
 import { createBrowserClient } from "@supabase/ssr";
 export function browserDb() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

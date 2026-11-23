@@ -1,3 +1,4 @@
+// This page shows the fictional source notes used in the demo so a student can inspect them.
 import { PageHeading } from "@/components/ui";
 import { demoSources } from "@/lib/catalogue";
 export const metadata = { title: "Synthetic source notes" };

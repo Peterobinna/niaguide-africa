@@ -1,3 +1,4 @@
+// I keep small pieces used across the site here, such as the wordmark, expert cards and guidance disclosure.
 import Link from "next/link";
 import { ArrowUpRight, Compass, BookOpen, ShieldCheck } from "lucide-react";
 import { disclosure, expertPath, statusLabel, type Expert } from "@/lib/catalogue";
@@ -13,6 +14,7 @@ export function Wordmark() {
     </Link>
   );
 }
+// Show the same explanation of the guidance wherever this component is used.
 export function Disclosure() {
   return (
     <aside className="disclosure">
@@ -21,6 +23,7 @@ export function Disclosure() {
     </aside>
   );
 }
+// Use one linked card for the homepage, directory and dashboard.
 export function ExpertCard({ expert }: { expert: Expert }) {
   return (
     <Link

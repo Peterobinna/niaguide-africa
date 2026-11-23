@@ -1,3 +1,4 @@
+// I use the shared History component to show recent questions and available expert collections.
 import { PageHeading } from "@/components/ui";
 import { WorkspaceNav } from "@/components/workspace-nav";
 import { History } from "@/components/history";

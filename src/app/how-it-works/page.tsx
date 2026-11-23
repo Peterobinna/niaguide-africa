@@ -1,3 +1,4 @@
+// This page shows students how to ask a question and check the sources behind a reply.
 import Link from "next/link";
 import { PageHeading, Disclosure } from "@/components/ui";
 export const metadata = { title: "How It Works" };

@@ -1,3 +1,4 @@
+// This script makes a few requests to an already-running app to check that its basic routes work.
 const base = process.env.SMOKE_BASE_URL || "http://127.0.0.1:3000";
 const run = async () => {
   const cases = [

@@ -1,3 +1,4 @@
+/* These styles are shared across the site. The media queries farther down adjust the layout for smaller screens. */
 @import "tailwindcss";
 @theme inline {
   --color-navy: #0b1f3a;
@@ -5,6 +6,7 @@
   --color-emerald: #0f766e;
   --font-sans: var(--font-inter);
 }
+/* I keep the main colours and other shared values here so the pages look consistent. */
 :root {
   --navy: #0b1f3a;
   --gold: #d4a72c;
@@ -97,6 +99,7 @@ p {
   padding-inline: 36px;
   margin-inline: auto;
 }
+/* Start the shared navigation styles. The phone layout farther down changes how the menu opens. */
 .header {
   position: relative;
   background: #fff;
@@ -461,6 +464,7 @@ p {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 22px;
 }
+/* These cards link students to a full expert profile. */
 .expert-card {
   padding: 25px;
   border: 1px solid var(--line);
@@ -841,6 +845,7 @@ textarea {
   font-size: 14px;
   color: var(--navy);
 }
+/* These styles make each cited source easier to open and read. */
 .source-details {
   border: 1px solid var(--line);
   border-radius: 7px;
@@ -998,6 +1003,7 @@ td select {
 .auth-card .button {
   width: 100%;
 }
+/* Underlining links in the account form makes the next action easier to spot. */
 .auth-card a {
   color: var(--green);
   text-decoration: underline;
@@ -1007,6 +1013,7 @@ td select {
   border-radius: 8px;
   margin-bottom: 15px;
 }
+/* The whole question header is clickable. The styles show when the pointer or keyboard is on it. */
 .history-toggle {
   display: block;
   padding: 22px;
@@ -1142,6 +1149,7 @@ a:not(.button, .expert-card, .wordmark):hover,
     grid-template-columns: 1fr 1fr;
   }
 }
+/* These rules keep the account link and menu easy to reach on a phone. */
 @media (max-width: 780px) {
   .container {
     padding-inline: 23px;

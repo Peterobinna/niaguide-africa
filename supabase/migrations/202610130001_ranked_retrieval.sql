@@ -1,6 +1,8 @@
+-- This migration updates the text search that finds approved passages for the selected expert.
 -- Ranked lexical candidates; preserves expert, rights, approval and RLS restrictions.
 -- Answer generation still independently checks evidence sufficiency.
 begin;
+-- Search approved passages for the selected expert and return the strongest text matches first.
 create or replace function public.retrieve_passages(selected_expert uuid,search_text text) returns table(id uuid,title text,type text,published_at date,url text,content text,synthetic boolean) language sql stable security invoker set search_path=public as $fn$
 with terms as (select tsvector_to_array(to_tsvector('english',left(search_text,1200))) as words),
 q as (select words,to_tsquery('english',array_to_string(array(select quote_literal(w) from unnest(words) w),' | ')) as any_term from terms where cardinality(words)>0),

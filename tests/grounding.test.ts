@@ -1,3 +1,4 @@
+// These tests use controlled inputs to check validation, searches, citations and the answer retry.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { demoId, experts, demoSources } from "../src/lib/catalogue";
@@ -24,6 +25,7 @@ test("suggestions stay scoped to curated available collections", () => {
     3,
   );
 });
+// These tests check input and demo search before we get to the live-style generation checks.
 test("imported PostgreSQL expert IDs pass while malformed IDs fail", () => {
   const question = "How can mental models help me solve problems?";
   for (const expertId of [
@@ -152,6 +154,7 @@ import {
   contextForExpert,
   retrieveWithPlan,
 } from "../src/lib/conversation";
+// Check that follow-ups can be short and that earlier turns stay with the selected expert.
 test("follow-ups accept short replies and context is bounded to the current expert", () => {
   let context = appendExchange(
     demoId,
@@ -301,6 +304,7 @@ test("multi-query retrieval fits the database citation limit before generation",
   assert.equal(new Set(sources.map((source) => source.id)).size, 4);
   assert.equal(sources[0].id, "partner-0");
 });
+// Check that the quote comes from the supplied excerpt and keeps its original spacing.
 test("evidence selection preserves transcript whitespace and never trusts model quotes", () => {
   const sources = [
     {
@@ -382,6 +386,7 @@ test("diagnostics identify failures without including source or question text", 
     { attempt: 1, issues: [{ claim: 1, code: "quote_not_exact" }] },
   ]);
 });
+// These tests compare a fixed retry with replies that keep failing or have too little evidence.
 test("generation retries invalid quotes once and accepts only verified claims", async () => {
   const calls: boolean[] = [];
   const result = await checkedGeneration(demoSources, async (repair) => {

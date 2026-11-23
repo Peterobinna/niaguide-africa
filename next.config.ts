@@ -1,3 +1,4 @@
+// Next.js reads these project settings when it runs or builds the app.
 import type { NextConfig } from "next";
 const config: NextConfig = {
   poweredByHeader: false,

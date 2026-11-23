@@ -1,3 +1,4 @@
+// This page gets the selected expert from the URL and passes the starting information to the chat form.
 import { AskForm } from "@/components/ask-form";
 import { getCatalogue } from "@/lib/server/catalogue";
 import { currentUser } from "@/lib/supabase/server";
