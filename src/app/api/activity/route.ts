@@ -81,9 +81,10 @@ export async function GET() {
   const { data, error } = await db
     .from("answers")
     .select(
-      "id,content,model,latency_ms,insufficient,created_at,queries(question,expert_id),citations(marker,passages(id,content,source_documents(title,type,published_at,url))),saved_answers(answer_id)",
+      "id,content,model,latency_ms,insufficient,created_at,queries(question,expert_id),citations(marker,passages(id,content,source_documents(title,type,published_at,url))),saved_answers(answer_id),feedback(helpful)",
     )
     .eq("user_id", user.id)
+    .eq("feedback.user_id", user.id)
     .order("created_at", { ascending: false })
     .limit(100);
   if (error) return failure("Your history could not be loaded.", 503);

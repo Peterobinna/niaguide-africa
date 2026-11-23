@@ -28,6 +28,7 @@ type DbRow = {
     } | null;
   }[];
   saved_answers: { answer_id: string }[];
+  feedback: { helpful: boolean }[];
 };
 export function History({
   kind,
@@ -64,6 +65,8 @@ export function History({
               createdAt: row.created_at,
               synthetic: false,
               saved: row.saved_answers.length > 0,
+              // Restore the saved vote, including a Not Helpful (false) vote.
+              helpful: row.feedback[0]?.helpful,
               sources: row.citations
                 .sort((a, b) => a.marker - b.marker)
                 .map((c) => ({
@@ -109,7 +112,7 @@ export function History({
         </div>
       )}
       {loading ? (
-        <p role="status">Loading your workspace…</p>
+        <p role="status">Loading your workspaceâ€¦</p>
       ) : error ? (
         <div className="error" role="alert">
           {error}{" "}
@@ -147,7 +150,7 @@ export function History({
               <details className="history-item" key={row.id}>
                 <summary className="history-toggle">
                   <span className="muted">
-                    {new Date(row.createdAt).toLocaleDateString("en-GB")} ·{" "}
+                    {new Date(row.createdAt).toLocaleDateString("en-GB")} Â·{" "}
                     {row.synthetic
                       ? "Fictional demonstration"
                       : "Your collection"}
@@ -180,8 +183,8 @@ export function History({
                 kind === "saved"
                   ? "Save an answer after asking a question. It will appear here."
                   : demoMode
-                    ? "You haven’t asked a question yet. Explore the fictional demo to get started."
-                    : "You haven’t asked a question yet. Browse the collections and check their source availability."
+                    ? "You havenâ€™t asked a question yet. Explore the fictional demo to get started."
+                    : "You havenâ€™t asked a question yet. Browse the collections and check their source availability."
               }
             />
           )}
@@ -199,14 +202,14 @@ export function History({
               "Purposeful living",
             ].map((t) => (
               <Link href="/ask" key={t}>
-                {t} ↗
+                {t} â†—
               </Link>
             ))}
           </div>
           <div className="section-heading" style={{ marginTop: 40 }}>
             <h2>Collections to discover</h2>
             <Link className="text-link" href="/saved">
-              View saved answers →
+              View saved answers â†’
             </Link>
           </div>
           <div className="grid-3">
