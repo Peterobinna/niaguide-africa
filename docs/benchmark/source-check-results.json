@@ -1,0 +1,68 @@
+{
+  "evidence_origin": "Peter supplied results from manually running 01-check-sources.sql in Supabase SQL Editor.",
+  "recorded_date": "2026-11-24",
+  "status": "all_four_passed_database_eligibility",
+  "limitations": "Database permission_granted flags are recorded, not an independent audit of permissions. These four fingerprints are not a full corpus snapshot.",
+  "rows": [
+    {
+      "source_key": "S1",
+      "expected_expert": "Nosakhare Tunde-Oni",
+      "expert_id": "ec828ef1-7442-476a-a9ef-1dc21ab118c9",
+      "actual_expert": "Nosakhare Tunde-Oni",
+      "passage_exists": true,
+      "document_matches": true,
+      "expert_status": "available",
+      "synthetic": false,
+      "approval_status": "approved",
+      "rights_status": "permission_granted",
+      "url": "https://www.instagram.com/nosa.tundeoni/reel/Dd4PdBxo0rG/",
+      "passage_characters": 368,
+      "passage_content_fingerprint": "5e360dbc3048530231a9a5eb7e256c69"
+    },
+    {
+      "source_key": "S2",
+      "expected_expert": "Nosakhare Tunde-Oni",
+      "expert_id": "ec828ef1-7442-476a-a9ef-1dc21ab118c9",
+      "actual_expert": "Nosakhare Tunde-Oni",
+      "passage_exists": true,
+      "document_matches": true,
+      "expert_status": "available",
+      "synthetic": false,
+      "approval_status": "approved",
+      "rights_status": "permission_granted",
+      "url": "https://www.instagram.com/nosa.tundeoni/reel/DeHsVS3IC1G/",
+      "passage_characters": 310,
+      "passage_content_fingerprint": "f5fac2f1bbc2697d979f61cd2128c781"
+    },
+    {
+      "source_key": "S3",
+      "expected_expert": "Aliko Dangote",
+      "expert_id": "00000000-0000-4000-8000-000000000001",
+      "actual_expert": "Aliko Dangote",
+      "passage_exists": true,
+      "document_matches": true,
+      "expert_status": "available",
+      "synthetic": false,
+      "approval_status": "approved",
+      "rights_status": "permission_granted",
+      "url": "https://www.mckinsey.com/featured-insights/leadership/dangote-group-on-the-africa-opportunity",
+      "passage_characters": 432,
+      "passage_content_fingerprint": "bb55d3f5a6e6deb017dea7bbd7c495f6"
+    },
+    {
+      "source_key": "S4",
+      "expected_expert": "Aliko Dangote",
+      "expert_id": "00000000-0000-4000-8000-000000000001",
+      "actual_expert": "Aliko Dangote",
+      "passage_exists": true,
+      "document_matches": true,
+      "expert_status": "available",
+      "synthetic": false,
+      "approval_status": "approved",
+      "rights_status": "permission_granted",
+      "url": "https://www.youtube.com/watch?v=pei8L9vvbYE",
+      "passage_characters": 2364,
+      "passage_content_fingerprint": "80bb373243c5d22bcc0d58469e86becf"
+    }
+  ]
+}
