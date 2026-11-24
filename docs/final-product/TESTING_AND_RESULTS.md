@@ -1,3 +1,5 @@
+> Update: See [23-24 November testing and fixes](TESTING_REPORT_2026-11-24.md) and the [report/slide summary](TESTING_SUMMARY_2026-11-24.md). The results below are historical.
+
 # Testing and results - 31 October 2026
 
 ## Environment
