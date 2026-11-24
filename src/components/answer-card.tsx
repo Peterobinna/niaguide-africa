@@ -27,6 +27,7 @@ export function AnswerCard({
     action: "save" | "feedback" | "report",
     value: boolean | string,
   ) {
+    if (busy) return;
     setMessage("");
     setBusy(true);
     try {
@@ -60,11 +61,17 @@ export function AnswerCard({
         onSavedChange?.(Boolean(value));
       }
       if (action === "feedback") setHelpful(Boolean(value));
-      if (action === "report") setReportOpen(false);
+      if (action === "report") {
+        // Clear the report only after it has been saved successfully.
+        setReason("");
+        setReportOpen(false);
+      }
       setMessage(
         demoMode
           ? "Recorded in this browser for the demonstration only."
-          : "Your change has been saved.",
+          : action === "report"
+            ? "Your report has been submitted. Thank you."
+            : "Your change has been saved.",
       );
     } catch (e) {
       setMessage(e instanceof Error ? e.message : "Unable to save.");
@@ -200,7 +207,7 @@ export function AnswerCard({
             onChange={(e) => setReason(e.target.value)}
           />
           <button className="button small" disabled={busy}>
-            Submit report
+            {busy ? "Submitting report..." : "Submit report"}
           </button>
         </form>
       )}
