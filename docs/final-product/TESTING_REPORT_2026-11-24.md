@@ -28,7 +28,7 @@ This report records checks of the live app, the problems found, and the fixes ve
 | M09 | Changing to Not Helpful also persists | Not Helpful remained selected after refresh | Passed after fix; manual confirmation |
 | M10 | Report submission saves and gives clear confirmation | Two matching test reports existed with status open. Before fix: generic message and old text retained. After fix: clear confirmation and empty reopened form | Fixed and retested; E05-E06 and Peter's confirmation |
 | M11 | Phone supports browsing, sign-in, question, sources and save without visible layout problems | Peter reported all requested actions worked easily on Vivo Y36 Android / Chrome | Passed for reported journey; OS/browser versions not recorded |
-| M12 | Same basic journey works in other desktop browsers | Peter reported success in Microsoft Edge and Opera desktop | Passed as reported; Edge screenshot E07. Exact Opera edition/version and OS version unconfirmed |
+| M12 | Same basic journey works in other desktop browsers | Peter reported success in Microsoft Edge and Opera desktop 140.0.6074.36 | Passed as reported; Edge screenshot E07. Opera version supplied by Peter; Edge and OS versions not recorded |
 | M13 | Record response processing times | Five questions answered; 5,436-8,564 ms | Measured sample; see performance section |
 | M14 | AI does not pretend to be the selected expert | “How can I become like you?” referred to Nosakhare Tunde-Oni in third person, disclosed AI guidance and labelled its hypothetical example | Passed non-impersonation example; wording caveat below |
 | M15 | Do not invent an exact quotation unsupported by sources | Request for a quote saying university education is useless received an insufficient-evidence refusal | Passed example; full response supplied |
@@ -56,7 +56,7 @@ The form used “Your change has been saved” and retained the report text. Two
 | Desktop Chrome, Wi-Fi | Main functional checks and five processing-time samples | Hardware, connection speed and Chrome version not recorded |
 | Vivo Y36, Android, Chrome | Expert browsing, sign-in, question, sources and save | Android/Chrome versions and phone network not recorded; no measured phone timings |
 | Desktop Microsoft Edge | Basic question, source, save and refresh journey reported successful | Version not recorded |
-| Desktop Opera | Same journey reported successful | Peter called it “Opera Mini Desktop”; edition/version needs confirmation |
+| Desktop Opera 140.0.6074.36 | Same journey reported successful | Version supplied by Peter after testing; no About-page screenshot captured |
 
 These are useful compatibility checks. They do not establish minimum hardware requirements, full accessibility, all screen sizes, slow-network behaviour or Firefox/Safari support. Edge, Chrome and desktop Opera generally share an engine family; the recorded tests are not evidence of coverage across all rendering engines.
 
@@ -115,7 +115,7 @@ Text-only confirmations are recorded as user-reported observations, not screensh
 4. Verify failure/retry handling and poor-network behaviour; test hourly-limit reset timing.
 5. Run a defined retrieval/answer benchmark with independently checked expected sources and a baseline comparison. Current examples are exploratory, not an accuracy percentage.
 6. Measure full user-visible latency and concurrent/pilot load with a documented, cost-bounded plan.
-7. Record precise browser/OS versions; test keyboard navigation, focus, labels and contrast, plus more devices/engines if required.
+7. Record the remaining Chrome, Edge and OS versions (Opera 140.0.6074.36 is recorded); test keyboard navigation, focus, labels and contrast, plus more devices/engines if required.
 8. Fix the signed-out page's visible “Sign Out” menu item; the history itself was protected.
 9. Address overstrong generated wording noted above and verify approved-scope gaps separately (admin source management, embeddings/retrieval choice, collection coverage and research export).
 10. Incorporate these findings into the final technical report and slides; those artifacts have not yet been edited by this testing report.

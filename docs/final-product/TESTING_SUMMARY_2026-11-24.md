@@ -4,7 +4,7 @@ Prepared 24 November 2026. Source: `TESTING_REPORT_2026-11-24.md`.
 
 ## Technical-report text
 
-During the 23-24 November improvement session, the developer manually checked NiaGuide on desktop Chrome, Microsoft Edge, Opera desktop and a Vivo Y36 Android phone using Chrome. The tested journeys included questions, short follow-ups, history, source links, saved answers, feedback and reporting. Browser and operating-system versions were not recorded, so these results apply to the tested environments rather than every version.
+During the 23-24 November improvement session, the developer manually checked NiaGuide on desktop Chrome, Microsoft Edge, Opera desktop 140.0.6074.36 and a Vivo Y36 Android phone using Chrome. The tested journeys included questions, short follow-ups, history, source links, saved answers, feedback and reporting. Peter supplied Opera version 140.0.6074.36. Chrome, Edge and operating-system versions have not been recorded. These results apply to the tested environments rather than every version.
 
 The session found three issues: the database rejected short questions, saved feedback did not remain highlighted after refresh, and report submission used an unclear message while keeping old text. The database rule and application code were updated. The developer confirmed that short follow-ups were stored, Helpful and Not Helpful persisted after refresh, and reports displayed a clear confirmation with an empty form when reopened.
 
@@ -16,7 +16,7 @@ After the feedback and report-form fixes, lint, type checking, 21 existing autom
 
 ## Slide 1: What we tested
 
-- Desktop: Chrome, Microsoft Edge and Opera (exact versions pending).
+- Desktop: Opera 140.0.6074.36, Chrome and Microsoft Edge (Chrome/Edge versions pending).
 - Phone: Vivo Y36, Android, Chrome.
 - Journeys: ask, follow up, inspect sources, history, save, vote and report.
 - Manual checks performed by the developer; not an independent user study.
@@ -25,11 +25,11 @@ Speaker note: Describe these as the devices and journeys actually tested. Do not
 
 ## Slide 2: Problems found and fixed
 
-| Problem | Change | Retest |
-|---|---|---|
-| Short questions conflicted with database limit | Align app and database question rules | Why? and How? answered and appeared in history |
-| Feedback highlight disappeared | Load the saved vote with history | Helpful and Not Helpful survived refresh |
-| Report confirmation was unclear | Specific success message and clear submitted text | Confirmation appeared; reopened form was empty |
+| Problem                                        | Change                                            | Retest                                         |
+| ---------------------------------------------- | ------------------------------------------------- | ---------------------------------------------- |
+| Short questions conflicted with database limit | Align app and database question rules             | Why? and How? answered and appeared in history |
+| Feedback highlight disappeared                 | Load the saved vote with history                  | Helpful and Not Helpful survived refresh       |
+| Report confirmation was unclear                | Specific success message and clear submitted text | Confirmation appeared; reopened form was empty |
 
 Speaker note: Show a current live example. The report form still allows separate reports; do not claim server-side duplicate prevention.
 
