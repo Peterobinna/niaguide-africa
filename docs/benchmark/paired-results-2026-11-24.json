@@ -1,0 +1,160 @@
+{
+  "benchmark_sha256": "1ee596465023f685d80d86feb67d187636d6308d910737e3525f2b71561721fd",
+  "sql_export_sha256": "94360cb3b05af55128ddc122c9acf398d42062346e8c0d0a5af467bb5a7bd0ec",
+  "snapshot": [
+    "2026-11-24 13:26:08.249082+00",
+    "postgres",
+    "604be8bee73da04bbf5820d9eb82c465",
+    149,
+    "fc754c99062991e941c80ffa943ca7a8"
+  ],
+  "denominator": 8,
+  "baseline_hits": 1,
+  "current_hits": 3,
+  "clarifications": 1,
+  "planner_errors": 0,
+  "groups": [
+    {
+      "kind": "direct",
+      "denominator": 4,
+      "baseline_hits": 1,
+      "current_hits": 3
+    },
+    {
+      "kind": "paraphrase",
+      "denominator": 4,
+      "baseline_hits": 0,
+      "current_hits": 0
+    }
+  ],
+  "results": [
+    {
+      "id": "Q01",
+      "kind": "direct",
+      "status": "search",
+      "baseline_ids": [],
+      "current_ids": [],
+      "baseline_hit": false,
+      "current_hit": false,
+      "planning_ms": 5642
+    },
+    {
+      "id": "Q02",
+      "kind": "paraphrase",
+      "status": "clarification",
+      "baseline_ids": [],
+      "current_ids": [],
+      "baseline_hit": false,
+      "current_hit": false,
+      "planning_ms": 1210
+    },
+    {
+      "id": "Q03",
+      "kind": "direct",
+      "status": "search",
+      "baseline_ids": [
+        "1e9531e0-1f29-6422-158f-a2950233c354",
+        "7b742eb3-d6ac-7047-a32a-7b69b9f5c1b8",
+        "ffeb8f94-56fa-1bfd-9982-02161b3c4c28"
+      ],
+      "current_ids": [
+        "1e9531e0-1f29-6422-158f-a2950233c354",
+        "7b742eb3-d6ac-7047-a32a-7b69b9f5c1b8",
+        "ffeb8f94-56fa-1bfd-9982-02161b3c4c28"
+      ],
+      "baseline_hit": true,
+      "current_hit": true,
+      "planning_ms": 1126
+    },
+    {
+      "id": "Q04",
+      "kind": "paraphrase",
+      "status": "search",
+      "baseline_ids": [],
+      "current_ids": [
+        "0ebc8f40-0a63-968d-cc70-2dbd1f250330",
+        "7b742eb3-d6ac-7047-a32a-7b69b9f5c1b8",
+        "1cffc53d-629c-2a2b-434f-cc4c72efa599"
+      ],
+      "baseline_hit": false,
+      "current_hit": false,
+      "planning_ms": 1251
+    },
+    {
+      "id": "Q06",
+      "kind": "direct",
+      "status": "search",
+      "baseline_ids": [
+        "b3a7e03a-2970-4bde-940d-b83a2603c798",
+        "1a0f78ea-4261-4b72-84a0-f0394ebc9399",
+        "5d5fb141-99ef-47f4-86c5-10e2991d4d72",
+        "c52da244-dcec-40d2-b216-aebc7d973166"
+      ],
+      "current_ids": [
+        "b3a7e03a-2970-4bde-940d-b83a2603c798",
+        "63499f92-3d86-853e-e7f3-7fa084efcf80",
+        "1a0f78ea-4261-4b72-84a0-f0394ebc9399",
+        "052d287d-a930-40e9-8c00-6337713c5678"
+      ],
+      "baseline_hit": false,
+      "current_hit": true,
+      "planning_ms": 1412
+    },
+    {
+      "id": "Q07",
+      "kind": "paraphrase",
+      "status": "search",
+      "baseline_ids": [
+        "b38ce0bf-c41a-4fdd-a5a0-32acfb266778",
+        "12a919af-f567-4e15-a999-cb8f50a2fb5c",
+        "6d79c099-cbc0-42aa-a98b-39b14ca557b2",
+        "4b6a9759-6888-49dd-a71f-00df5a5ef14f"
+      ],
+      "current_ids": [
+        "12a919af-f567-4e15-a999-cb8f50a2fb5c",
+        "b38ce0bf-c41a-4fdd-a5a0-32acfb266778",
+        "43d63853-b0bc-4c50-86e7-9187f471979a",
+        "6d79c099-cbc0-42aa-a98b-39b14ca557b2"
+      ],
+      "baseline_hit": false,
+      "current_hit": false,
+      "planning_ms": 1397
+    },
+    {
+      "id": "Q08",
+      "kind": "direct",
+      "status": "search",
+      "baseline_ids": [
+        "5d5fb141-99ef-47f4-86c5-10e2991d4d72",
+        "206017d4-9d7c-405a-b1bc-d1599b4d10ed",
+        "38540383-b600-4704-b05b-6cf14d0ff551",
+        "8d4c7519-ce0c-4470-b7a2-fab7ec0a09a1"
+      ],
+      "current_ids": [
+        "5d5fb141-99ef-47f4-86c5-10e2991d4d72",
+        "206017d4-9d7c-405a-b1bc-d1599b4d10ed",
+        "052d287d-a930-40e9-8c00-6337713c5678",
+        "8d4c7519-ce0c-4470-b7a2-fab7ec0a09a1"
+      ],
+      "baseline_hit": false,
+      "current_hit": true,
+      "planning_ms": 1432
+    },
+    {
+      "id": "Q09",
+      "kind": "paraphrase",
+      "status": "search",
+      "baseline_ids": [],
+      "current_ids": [
+        "a75c2490-d86a-419c-8165-cb2a66b889c4",
+        "47ea534b-221e-4d80-b90a-0a5f5a1d7580",
+        "3b5f8929-6ceb-4b1b-802a-9364c8ac6943",
+        "5c1c4527-fd84-4ae9-a9f4-884066e338ba"
+      ],
+      "baseline_hit": false,
+      "current_hit": false,
+      "planning_ms": 1872
+    }
+  ],
+  "limitations": "Expected-passage hit rate, not answer accuracy. Planner failures and clarifications remain in denominator and are reported separately. SQL Editor context, not authenticated RLS test. No retrieval/network timing measurement. No answer generation or safety scoring."
+}

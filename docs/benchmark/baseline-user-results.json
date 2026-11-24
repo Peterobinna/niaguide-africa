@@ -1,0 +1,58 @@
+{
+  "origin": "Peter manually ran 02-baseline-search.sql and pasted these results. Execution timestamp and full corpus snapshot were not captured.",
+  "expected_passage_hits": 1,
+  "denominator": 8,
+  "rows": [
+    {
+      "case_id": "Q01",
+      "baseline_passage_ids": []
+    },
+    {
+      "case_id": "Q02",
+      "baseline_passage_ids": []
+    },
+    {
+      "case_id": "Q03",
+      "baseline_passage_ids": [
+        "1e9531e0-1f29-6422-158f-a2950233c354",
+        "7b742eb3-d6ac-7047-a32a-7b69b9f5c1b8",
+        "ffeb8f94-56fa-1bfd-9982-02161b3c4c28"
+      ]
+    },
+    {
+      "case_id": "Q04",
+      "baseline_passage_ids": []
+    },
+    {
+      "case_id": "Q06",
+      "baseline_passage_ids": [
+        "b3a7e03a-2970-4bde-940d-b83a2603c798",
+        "1a0f78ea-4261-4b72-84a0-f0394ebc9399",
+        "5d5fb141-99ef-47f4-86c5-10e2991d4d72",
+        "c52da244-dcec-40d2-b216-aebc7d973166"
+      ]
+    },
+    {
+      "case_id": "Q07",
+      "baseline_passage_ids": [
+        "b38ce0bf-c41a-4fdd-a5a0-32acfb266778",
+        "12a919af-f567-4e15-a999-cb8f50a2fb5c",
+        "6d79c099-cbc0-42aa-a98b-39b14ca557b2",
+        "4b6a9759-6888-49dd-a71f-00df5a5ef14f"
+      ]
+    },
+    {
+      "case_id": "Q08",
+      "baseline_passage_ids": [
+        "5d5fb141-99ef-47f4-86c5-10e2991d4d72",
+        "206017d4-9d7c-405a-b1bc-d1599b4d10ed",
+        "38540383-b600-4704-b05b-6cf14d0ff551",
+        "8d4c7519-ce0c-4470-b7a2-fab7ec0a09a1"
+      ]
+    },
+    {
+      "case_id": "Q09",
+      "baseline_passage_ids": []
+    }
+  ]
+}
